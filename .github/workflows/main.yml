@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - 'main'
-  pull_request:
-    branches:
+  pull_request: 
+    branches: 
       - 'main'
 
 jobs:
@@ -13,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Cd Repo
-        uses: cd chatez
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Install dependencies
         run: npm install
+        working-directory: chatez
       - name: Run tests
         run: npm test
+        working-directory: chatez

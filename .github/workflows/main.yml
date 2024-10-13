@@ -16,8 +16,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
         working-directory: chatez
       - name: Run tests
         run: npm test
         working-directory: chatez
+

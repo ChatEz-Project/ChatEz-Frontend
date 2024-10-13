@@ -1,0 +1,24 @@
+name: Run tests
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request: 
+    branches: 
+      - 'main'
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+        working-directory: chatez
+      - name: Run tests
+        run: npm test
+        working-directory: chatez
+

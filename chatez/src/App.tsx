@@ -3,6 +3,7 @@ import './App.css';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // Components for the different pages to test react router
 const Home = () => <h2>Home Page</h2>;
@@ -15,6 +16,7 @@ function App() {
       <div className="App">
         <h1>ChatEz</h1>
         <img src={logo} alt="chatEz" />
+        <DeleteIcon color="secondary" />
         <br />
         <Button variant="outline-primary">Button</Button>
         <Router>

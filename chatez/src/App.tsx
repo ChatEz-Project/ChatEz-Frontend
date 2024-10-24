@@ -1,8 +1,6 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginPage from './pages/LoginPage/login';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import HomePage from './pages/ChatsPage/chats';
 import { useAuth } from './contexts/authContext';

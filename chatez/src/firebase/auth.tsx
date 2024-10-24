@@ -23,7 +23,6 @@ export const doSignInWithEmailAndPassword = async (
   email: string,
   password: string
 ) => {
-  console.log('doSignInWithEmailAndPassword');
   return signInWithEmailAndPassword(auth, email, password);
 };
 

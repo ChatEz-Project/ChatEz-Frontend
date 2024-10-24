@@ -25,8 +25,14 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isSigningIn) {
-      setIsSigningIn(true);
-      await doSignInWithEmailAndPassword(email, password);
+      try {
+        setIsSigningIn(true);
+        await doSignInWithEmailAndPassword(email, password);
+      } catch (error) {
+        console.error('Sign in error:', error);
+      } finally {
+        setIsSigningIn(false);
+      }
     }
   };
 

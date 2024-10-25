@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -13,6 +13,7 @@ import {
 } from '../../firebase/auth';
 import { Redirect } from 'react-router-dom';
 import { useAuth } from '../../contexts/authContext';
+import { useGoogleTranslate } from '../../globalHooks/useGoogleTranslations';
 
 const LoginPage: React.FC = () => {
   const { userLoggedIn } = useAuth();
@@ -20,9 +21,10 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
-
+  const { translate, translations } = useGoogleTranslate();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    translate('Sign In', 'es');
 
     if (!isSigningIn) {
       try {
@@ -35,6 +37,12 @@ const LoginPage: React.FC = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (translations) {
+      console.log('Translation:', translations);
+    }
+  }, [translations]);
 
   const onGoogleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

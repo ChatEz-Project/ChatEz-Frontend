@@ -11,8 +11,13 @@ import {
   Grid,
 } from '@mui/material';
 import { Home as HomeIcon } from '@mui/icons-material';
+import { doSignOut } from '../../firebase/auth';
+import { useHistory } from 'react-router-dom';
 
 const HomePage: React.FC = () => {
+  const handleSignOut = () => {
+    doSignOut();
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -21,7 +26,9 @@ const HomePage: React.FC = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             My App
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={handleSignOut}>
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
 

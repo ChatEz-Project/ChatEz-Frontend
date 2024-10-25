@@ -1,7 +1,12 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginPage from './pages/Login/login';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import HomePage from './pages/Chats/chats';
 import { useAuth } from './contexts/authContext';
 
@@ -11,6 +16,7 @@ function App() {
   return (
     <div className="App">
       <Router>
+        {!userLoggedIn ? <Redirect to="/" /> : null}
         <Switch>
           <Route exact path="/" component={LoginPage} />
           {userLoggedIn && <Route exact path="/home" component={HomePage} />}

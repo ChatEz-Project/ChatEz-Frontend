@@ -1,34 +1,26 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LoginPage from './pages/LoginPage/login';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import LoginPage from './pages/Login/login';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
+import HomePage from './pages/Chats/chats';
+import { useAuth } from './contexts/authContext';
 
 function App() {
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.post(
-          'http://localhost:8080/addFriend/bobber@gmail.com'
-        );
-        setData(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-  console.log(data);
+  const { userLoggedIn } = useAuth();
 
   return (
     <div className="App">
       <Router>
+        {!userLoggedIn ? <Redirect to="/" /> : null}
         <Switch>
           <Route exact path="/" component={LoginPage} />
+          {userLoggedIn && <Route exact path="/home" component={HomePage} />}
+
           {/* 
             TODO: 
               - Logout page

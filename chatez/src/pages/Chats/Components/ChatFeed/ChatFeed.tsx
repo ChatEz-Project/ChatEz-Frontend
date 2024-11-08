@@ -19,8 +19,8 @@ const ChatFeed: React.FC = () => {
 
     // Test purposes
     const recipientTestMessage: Message = {
-        sender: "Jamie-Lee",
-        recipient: "Abdul",
+        sender: "Abdul",
+        recipient: "Jamie-Lee",
         message: "Hello, how are you?",
         dateSent: new Date(),  // current date and time for test purposes 
         read: false,

@@ -2,7 +2,7 @@ import { IconButton } from "@mui/material";
 import "./ChatFeed.css"
 import MenuIcon from '@mui/icons-material/Menu';
 import { AccountCircle, AttachFile, Image, Send } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Message } from '../../../../Utils/Types'
 
 const ChatFeed: React.FC = () => {
@@ -27,13 +27,11 @@ const ChatFeed: React.FC = () => {
         fileRef: null           
     };
 
-    // call endpoint to flood these arrays with the messages:
-
     // all of your messages which you have sent to this particular friend goes here:
-    const [yourMessagesList, setYourMessagesList] = useState<Message[]>([yourTestMessage])
+    const [yourMessagesList, setYourMessagesList] = useState<Message[]>([])
 
     // all of your messages which you have recieved from this particular friend goes here: 
-    const [recipientMessagesList, setRecipientMessagesList] = useState<Message[]>([recipientTestMessage])
+    const [recipientMessagesList, setRecipientMessagesList] = useState<Message[]>([])
 
     // eslint-disable-next-line no-lone-blocks
     {/* NOTE:
@@ -42,6 +40,12 @@ const ChatFeed: React.FC = () => {
         - the new list will also determine who sent what message
     */}
     const [allMessages, setAllMessages] = useState<string[]>([]) 
+
+    // call endpoint to flood these arrays with the messages, instead of the test objects.
+    useEffect(() => {
+        setYourMessagesList([yourTestMessage])
+        setRecipientMessagesList([recipientTestMessage])
+    }, []);
 
     const [message, setMesasge] = useState<string>("")
 

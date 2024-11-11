@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { AppBar, Toolbar, Typography, Box, Button } from '@mui/material';
 import { Home as HomeIcon } from '@mui/icons-material';
-import { doSignOut } from '../../firebase/auth';
-import TextToSpeechAPI from '../../globalHooks/useTextToSpeech';
+import { doSignOut } from '../firebase/auth';
+import TextToSpeechAPI from '../globalHooks/useTextToSpeech';
+import ChatFeed from './Chats/Components/ChatFeed/ChatFeed';
 
 const HomePage: React.FC = () => {
   const handleSignOut = () => {
@@ -21,20 +22,10 @@ const HomePage: React.FC = () => {
   console.log(audioSrc);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <HomeIcon sx={{ mr: 2 }} />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            My App
-          </Typography>
-          <Button color="inherit" onClick={handleSignOut}>
-            Login
-          </Button>
-        </Toolbar>
-      </AppBar>
-      {audioSrc && <audio controls src={audioSrc} />}
-    </Box>
+    <div>
+      <ChatFeed />
+  
+    </div>
   );
 };
 

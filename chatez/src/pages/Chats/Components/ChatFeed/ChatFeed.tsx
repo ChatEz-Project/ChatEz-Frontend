@@ -49,20 +49,20 @@ const ChatFeed: React.FC = () => {
 
     const collapseRightPanel = () => {
         setIsRightPanelCollapsed(!isRightPanelCollapsed);
-        console.log("right panel has been collapsed")
     }
 
     const collapseLeftPanel = () => {
         setIsLeftPanelCollapsed(!isLeftPanelCollapsed);
-        console.log("left panel has been collapsed")
     }
 
     const insertImage = () => {
         console.log("Image has been inserted")
     }
+    
     const attachFile = () => {
         console.log("File has been attached")
     }
+
     const sendMessage = () => {
         console.log("Message has been sent")
         if (message !== "") {
@@ -95,7 +95,7 @@ const ChatFeed: React.FC = () => {
                     </IconButton>
                     <h3> 
                         <AccountCircle id = "Profile-icon"/> 
-                        Username
+                        Abdul
                     </h3>
                     <IconButton
                         id = "CollapseRightPanel-button"

@@ -6,6 +6,15 @@ interface ChatFeedProfilePanelProps {
 }
 
 const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({ className }) => {
+
+    const deleteConversation = () => {
+        console.log("Conversation has been deleted")
+    }
+
+    const removeFriend = () => {
+        console.log("Friend has been removed")
+    }
+
     return (
         <div className = {className ? `ChatFeedProfilePanel ${className}` : "ChatFeedProfilePanel"}>
             <AccountCircle id = "Profile-picture" />
@@ -38,12 +47,14 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({ className }
 
             <button
                 id = "DeleteConversation-button"
+                onClick = {deleteConversation}
             >
                 Delete Convo
             </button>
 
             <button
                 id = "RemoveFriend-button"
+                onClick = {removeFriend}
             >
                 Remove Friend
             </button>

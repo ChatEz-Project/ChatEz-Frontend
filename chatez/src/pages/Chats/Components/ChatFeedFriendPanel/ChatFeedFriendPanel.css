@@ -1,0 +1,13 @@
+.ChatFeedFriendPanel {
+    width: 280px;
+    background-color: #3A483F;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    z-index: 2; 
+    position: relative; 
+}
+
+.ChatFeedFriendPanel-Collapsed {
+    display: none;
+}

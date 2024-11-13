@@ -7,7 +7,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import HomePage from './pages/chats';
+import HomePage from './pages/Chats/chats';
 import { useAuth } from './contexts/authContext';
 
 function App() {

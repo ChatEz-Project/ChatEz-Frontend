@@ -9,7 +9,7 @@ export interface Message {
 }
 
 // getFriends()
-export interface Friend {
+export interface User {
   email: string;
   displayName: string;
   photoUrl: string;

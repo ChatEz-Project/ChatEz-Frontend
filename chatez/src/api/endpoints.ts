@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Friend, Message } from './types';
+import { User, Message } from './types';
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -45,7 +45,7 @@ export const getFriends = async (authToken: string) => {
     );
 
     // extract only necessary data
-    const friends: Friend[] = response.data.map((friend: Friend) => ({
+    const friends: User[] = response.data.map((friend: User) => ({
       email: friend.email,
       displayName: friend.displayName,
       photoUrl: friend.photoUrl,
@@ -97,10 +97,10 @@ export const removeFriend = async (authToken: string, friendEmail: string) => {
   }
 };
 
-export const getUser = async (authToken: string) => {
+export const getUser = async (authToken: string, userEmail: string) => {
   try {
     const response = await axios.patch(
-      `${BASE_URL}/getUser`,
+      `${BASE_URL}/getUser/${userEmail}`,
       {},
       {
         headers: {
@@ -109,7 +109,15 @@ export const getUser = async (authToken: string) => {
       }
     );
 
-    return response.data;
+    // extract only necessary data
+    const friends: User = {
+      email: response.data.email,
+      displayName: response.data.displayName,
+      photoUrl: response.data.photoUrl,
+      lastActive: response.data.lastActive,
+    };
+
+    return friends;
   } catch (error) {
     console.error('Error fetching messages:', error);
     throw error;

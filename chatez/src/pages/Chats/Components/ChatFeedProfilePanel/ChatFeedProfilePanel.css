@@ -1,0 +1,63 @@
+.ChatFeedProfilePanel {
+    width: 280px;
+    background-color: #3A483F;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    z-index: 2; 
+    position: relative; 
+}
+
+.ChatFeedProfilePanel-Collapsed {
+    display: none;
+}
+
+#Profile-picture {
+    height: 170px;
+    width: auto;
+    color: white;
+}
+
+#Display-name {
+    color: white;
+}
+
+hr {
+    background-color: white;
+    border: none;
+    height: 3px;
+}
+
+h2 {
+    text-align: left;
+    color: white;
+    font-size: 20px;
+}
+
+.SharedImage {
+    margin-bottom: 10px;
+    height: 50px;
+    width: 50px;
+}
+
+.Document {
+    color: white;
+    text-align: left;
+    font-size: 12px;
+}
+
+#DeleteConversation-button,
+#RemoveFriend-button {
+    border-radius: 25px;
+}
+
+#DeleteConversation-button {
+    margin-bottom: 15px;
+    color: white;
+    background-color: #85B0FE;
+}
+
+#RemoveFriend-button {
+    color: white;
+    background-color: #DD6666;
+}

@@ -1,120 +1,121 @@
 .Chat-feed-container {
-    display: flex;
-    flex-direction: row;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
 }
 
 .Chat-feed {
-    display: flex;
-    flex-direction: column;
-    flex: 1; 
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100vh;
 }
 
 .Top-panel {
-    background-color: #788B7E;
-    padding: 30px;
-    display: flex;
-    align-items: center;        
-    justify-content: space-between; 
-    position: relative;
-    height: 80px;
+  background-color: #788b7e;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  height: 80px;
 }
 
 .Top-panel h3 {
-    margin: 0;
-    text-align: center;        
-    flex: 1;                    
-    font-size: 24px;
+  margin: 0;
+  text-align: center;
+  flex: 1;
+  font-size: 24px;
 }
 
 #CollapseRightPanel-button,
 #CollapseLeftPanel-button {
-    color: white;
-    font-size: 40px;
-    display: flex;
-    align-items: center;  
-    justify-content: center; 
+  color: white;
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #Profile-icon {
-    color: white;
-    font-size: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
 #Collapse-icon {
-    font-size: 40px;
+  font-size: 40px;
 }
 
 .Messages-container {
-    flex: 1;
-    background-color: #C3D1C7;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 1% 30%;
-    margin-bottom: 50px;
+  flex: 1;
+  background-color: #c3d1c7;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1% 30%;
+  margin-bottom: 50px;
 }
 
 .Messages-area {
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  width: 100%;
 }
 
 .Message-box-recipient-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
 }
 
 .Message-box-recipient {
-    background-color: #43A656;
-    max-width: 200px;
-    margin: 0;
-    padding: 10px;
-    padding-bottom: 0px;
-    border-radius: 30px;
-    margin-right: auto;
-    word-wrap: break-word;
+  background-color: #43a656;
+  max-width: 200px;
+  margin: 0;
+  padding: 10px;
+  padding-bottom: 0px;
+  border-radius: 30px;
+  margin-right: auto;
+  word-wrap: break-word;
 }
 
 .Metadata-section-recipient {
-    margin-top: 5px;
-    color: #888;
-    text-align: left;
-    font-size: 0.8em;
+  margin-top: 5px;
+  color: #888;
+  text-align: left;
+  font-size: 0.8em;
 }
 
 .Message-box-you-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: 10px;
 }
 
 .Message-box-you {
-    background-color: #43A656;
-    max-width: 200px;
-    margin: 0;
-    padding: 10px;
-    padding-bottom: 0px;
-    border-radius: 30px;
-    margin-left: auto;
-    word-wrap: break-word;
+  background-color: #43a656;
+  max-width: 200px;
+  margin: 0;
+  padding: 10px;
+  padding-bottom: 0px;
+  border-radius: 30px;
+  margin-left: auto;
+  word-wrap: break-word;
 }
 
 .Metadata-section-you {
-    margin-top: 5px;
-    color: #888;
-    text-align: right;
-    font-size: 0.8em;
+  margin-top: 5px;
+  color: #888;
+  text-align: right;
+  font-size: 0.8em;
 }
 
 #Message {
-    color: white;
+  color: white;
 }
 
 /* .Bottom-panel {
@@ -126,29 +127,29 @@
     padding: 10px;
 } */
 
-#AttachFile-icon, #Image-icon, #Send-icon {
-    font-size: 40px;
+#AttachFile-icon,
+#Image-icon,
+#Send-icon {
+  font-size: 40px;
 }
 
 #Send-icon:hover {
-    color: #24d147;
+  color: #24d147;
 }
 
 #Chat-input {
-    border-radius: 30px;
-    padding: 5px;
-    padding-left: 10px;
-    width: 400px;
+  border-radius: 30px;
+  padding: 5px;
+  padding-left: 10px;
+  width: 400px;
 }
 
 .Bottom-panel {
-    background-color: #788B7E;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 10px;
-    z-index: 1; /* Lower than ChatFeedProfilePanel and ChatFeedFriendPanel */
+  background-color: #788b7e;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  z-index: 1; /* Lower than ChatFeedProfilePanel and ChatFeedFriendPanel */
 }
-
-

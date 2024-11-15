@@ -125,7 +125,7 @@ export const getUser = async (authToken: string, userEmail: string) => {
 };
 
 export const sendMessage = async (
-  authToken: string,
+  authToken: string | null,
   recipientEmail: string,
   message: string
 ) => {

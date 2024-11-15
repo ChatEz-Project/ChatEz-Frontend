@@ -3,31 +3,14 @@ import './ChatFeed.css';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AccountCircle, AttachFile, Image, Send } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
-import { Message } from '../../../../utils/Types';
+import { Message } from '../../../../backend/types';
 import ChatFeedProfilePanel from '../ChatFeedProfilePanel/ChatFeedProfilePanel';
 import ChatFeedFriendPanel from '../ChatFeedFriendPanel/ChatFeedFriendPanel';
+import { getFriendMessages } from '../../../../backend/endpoints.utils';
+import { useAuth } from '../../../../contexts/authContext';
+import { sendMessage } from '../../../../backend/endpoints';
 
 const ChatFeed: React.FC = () => {
-  // Test purposes
-  const yourTestMessage: Message = {
-    sender: 'Jamie-Lee',
-    recipient: 'Abdul',
-    message: "I'm good, thanks! How about you?",
-    dateSent: new Date(), // current date and time for test purposes
-    read: false,
-    fileRef: null,
-  };
-
-  // Test purposes
-  const recipientTestMessage: Message = {
-    sender: 'Abdul',
-    recipient: 'Jamie-Lee',
-    message: 'Hello, how are you?',
-    dateSent: new Date(), // current date and time for test purposes
-    read: false,
-    fileRef: null,
-  };
-
   // eslint-disable-next-line no-lone-blocks
   {
     /* NOTE:
@@ -36,12 +19,29 @@ const ChatFeed: React.FC = () => {
         - the new list will also determine who sent what message using sender and recipient 
     */
   }
-  const [allMessages, setAllMessages] = useState<Message[]>([]);
+  const { currentUserAccessToken, userLoggedIn, currentUser } = useAuth();
+  const [allMessages, setAllMessages] = useState<Message[]>();
 
-  // call endpoint to flood these arrays with the messages, instead of the test objects.
+  const fetchMessages = async () => {
+    try {
+      if (userLoggedIn && currentUserAccessToken && currentUser) {
+        console.log(currentUserAccessToken);
+        const messages = await getFriendMessages(
+          currentUserAccessToken,
+          'bobacri79@gmail.com',
+          currentUser.email
+        );
+        setAllMessages(messages);
+        console.log(messages);
+      }
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  };
+
   useEffect(() => {
-    setAllMessages([yourTestMessage, recipientTestMessage]);
-  }, []);
+    fetchMessages();
+  }, [userLoggedIn, currentUserAccessToken]);
 
   const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(true);
   const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(true);
@@ -64,19 +64,14 @@ const ChatFeed: React.FC = () => {
     console.log('File has been attached');
   };
 
-  const sendMessage = () => {
-    console.log('Message has been sent');
-    if (message !== '') {
-      allMessages.push({
-        sender: 'Jamie-Lee',
-        recipient: 'Abdul',
-        message: message,
-        dateSent: new Date(),
-        read: false,
-        fileRef: null,
-      });
-    }
+  const handleSubmit = async (
+    accessToken: string | null,
+    recipientEmail: string,
+    message: string
+  ) => {
+    await sendMessage(accessToken, recipientEmail, message);
     setMessage('');
+    fetchMessages();
   };
 
   return (
@@ -108,49 +103,51 @@ const ChatFeed: React.FC = () => {
 
         <div className="Messages-container">
           <div className="Messages-area">
-            <p>21st October</p>
             {/* NOTE:
                             - all messages both from you and recipient, all merge in the same list
                             - the new list will order them by date sent, so its all in order when rendered
                             - the new list will also determine who sent what message
                         */}
-            {allMessages
-              .filter((message) => message.recipient === 'Jamie-Lee')
-              .map((message, index) => (
-                <div className="Message-box-recipient-container" key={index}>
-                  <div className="Message-box-recipient">
-                    <p id="Message">{message.message}</p>
+            {allMessages &&
+              allMessages.map((message, index) =>
+                message.recipient === currentUser?.email ? (
+                  <div className="Message-box-recipient-container" key={index}>
+                    <div className="Message-box-recipient">
+                      <p id="Message">{message.message}</p>
+                    </div>
+                    <div className="Metadata-section-recipient">
+                      <p>
+                        {new Date(message.dateSent).toLocaleTimeString(
+                          'en-US',
+                          {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false,
+                          }
+                        )}
+                      </p>
+                    </div>
                   </div>
-                  <div className="Metadata-section-recipient">
-                    <p>
-                      {message.dateSent.toLocaleTimeString('en-US', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false,
-                      })}
-                    </p>
+                ) : (
+                  <div className="Message-box-you-container" key={index}>
+                    <div className="Message-box-you">
+                      <p id="Message">{message.message}</p>
+                    </div>
+                    <div className="Metadata-section-you">
+                      <p>
+                        {new Date(message.dateSent).toLocaleTimeString(
+                          'en-US',
+                          {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false,
+                          }
+                        )}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
-
-            {allMessages
-              .filter((message) => message.recipient === 'Abdul')
-              .map((message, index) => (
-                <div className="Message-box-you-container" key={index}>
-                  <div className="Message-box-you">
-                    <p id="Message">{message.message}</p>
-                  </div>
-                  <div className="Metadata-section-you">
-                    <p>
-                      {message.dateSent.toLocaleTimeString('en-US', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false,
-                      })}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                )
+              )}
           </div>
         </div>
 
@@ -167,7 +164,17 @@ const ChatFeed: React.FC = () => {
             onChange={(e) => setMessage(e.target.value)}
             value={message}
           ></input>
-          <IconButton id="Send-button" onClick={sendMessage}>
+
+          <IconButton
+            id="Send-button"
+            onClick={() =>
+              handleSubmit(
+                currentUserAccessToken,
+                'bobacri79@gmail.com',
+                message
+              )
+            }
+          >
             <Send id="Send-icon" />
           </IconButton>
         </div>

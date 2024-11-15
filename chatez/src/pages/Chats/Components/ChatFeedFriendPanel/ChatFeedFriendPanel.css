@@ -1,13 +1,135 @@
 .ChatFeedFriendPanel {
-    width: 280px;
-    background-color: #3A483F;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    z-index: 2; 
-    position: relative; 
+  width: 280px;
+  background-color: #3a483f;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  z-index: 2;
+  position: relative;
+  height: 100vh; /* Ensure it takes up the full height of the viewport */
 }
 
 .ChatFeedFriendPanel-Collapsed {
-    display: none;
+  display: none;
+}
+
+.ChatFeedFriendPanel h3 {
+  color: white;
+}
+
+.Bottom-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto; /* Pushes it to the bottom of the container */
+}
+
+#Logout-button {
+  border-radius: 25px;
+  font-size: 20px;
+  color: white;
+  background-color: #43a656;
+  width: 80%;
+  padding: 5px;
+}
+
+#Settings-button {
+  font-size: 40px;
+  color: #43a656;
+}
+
+#SearchUser-input {
+  border-radius: 25px;
+  padding: 5px;
+  padding-left: 10px;
+}
+
+.Top-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#AddFriends-button {
+  font-size: 30px;
+  color: white;
+}
+
+#ProfilePic-icon {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background-color: #3a483f;
+}
+
+#message-button {
+  display: flex;
+  align-items: center;
+  background-color: #3a483f;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  text-align: left;
+  color: white;
+  cursor: pointer;
+  outline: none;
+  padding: 10px;
+}
+
+#message-button:hover {
+  background-color: #506256;
+}
+
+.profile-pic-container {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+#ProfilePic-icon {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+#username {
+  font-weight: bold;
+  margin: 0;
+  color: white;
+}
+
+.timestamp {
+  font-size: 0.85em;
+  color: #aaaaaa;
+  margin: 0;
+}
+
+.message-text {
+  font-size: 0.9em;
+  color: #dddddd;
+  margin: 4px 0 0;
+}
+
+.messages-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }

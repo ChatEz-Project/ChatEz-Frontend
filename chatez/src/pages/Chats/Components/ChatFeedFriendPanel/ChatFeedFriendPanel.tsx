@@ -1,6 +1,10 @@
 import { AddCircleOutline, Settings } from '@mui/icons-material';
 import './ChatFeedFriendPanel.css';
 import { IconButton } from '@mui/material';
+import { useAuth } from '../../../../contexts/authContext';
+import { useEffect, useState } from 'react';
+import userEvent from '@testing-library/user-event';
+import { getUser } from '../../../../backend/endpoints';
 
 interface ChatFeedFriendPanelProps {
   className?: string;
@@ -9,6 +13,20 @@ interface ChatFeedFriendPanelProps {
 const ChatFeedFriendPanel: React.FC<ChatFeedFriendPanelProps> = ({
   className,
 }) => {
+  const { currentUserAccessToken, currentUser } = useAuth();
+  const [userProfileUrl, setUserProfileUrl] = useState<string | null>();
+
+  const fetchProfileUrl = async () => {
+    if (currentUser && currentUserAccessToken) {
+      const user = await getUser(currentUserAccessToken, currentUser.email);
+      console.log(user);
+      setUserProfileUrl(user.photoUrl);
+    }
+  };
+  useEffect(() => {
+    fetchProfileUrl();
+  });
+
   const openSettings = () => {
     console.log('Settings opened!');
   };
@@ -27,7 +45,7 @@ const ChatFeedFriendPanel: React.FC<ChatFeedFriendPanelProps> = ({
         {/* Insert actual display image/profile pic here by replacing the src */}
         <img
           id="Profile-icon"
-          src="https://storage.googleapis.com/chatez-438923.firebasestorage.app/MessageFiles%2F56rolsj%40gmail.com-1731362731422-phoenix_cropped.png"
+          src={userProfileUrl ? userProfileUrl : undefined}
           alt="Display icon"
         />
         {/* Insert actual Display name */}

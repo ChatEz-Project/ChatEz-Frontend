@@ -97,7 +97,7 @@ export const removeFriend = async (authToken: string, friendEmail: string) => {
   }
 };
 
-export const getUser = async (authToken: string, userEmail: string) => {
+export const getUser = async (authToken: string, userEmail: string | null) => {
   try {
     const response = await axios.patch(
       `${BASE_URL}/getUser/${userEmail}`,

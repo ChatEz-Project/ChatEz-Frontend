@@ -2,7 +2,7 @@ import React from 'react';
 import { ChatProvider } from '../../contexts/chatContext';
 import ChatFeed from './components/ChatFeed/ChatFeed';
 
-const HomePage: React.FC = () => {
+const ChatPage: React.FC = () => {
   return (
     <ChatProvider>
       <ChatFeed />
@@ -10,4 +10,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default ChatPage;

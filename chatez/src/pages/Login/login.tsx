@@ -56,7 +56,7 @@ const LoginPage: React.FC = () => {
   };
 
   if (userLoggedIn) {
-    return <Redirect to="/home" />;
+    return <Redirect to="/chats" />;
   }
 
   return (

@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
-import ChatFeed from './Components/ChatFeed/ChatFeed';
-import { useAuth } from '../../contexts/authContext';
-import { getFriendMessages } from '../../backend/endpoints.utils';
+import React from 'react';
+import { ChatProvider } from '../../contexts/chatContext';
+import ChatFeed from './components/ChatFeed/ChatFeed';
 
 const HomePage: React.FC = () => {
   return (
-    <div>
+    <ChatProvider>
       <ChatFeed />
-    </div>
+    </ChatProvider>
   );
 };
 

@@ -106,6 +106,17 @@ const LoginPage: React.FC = () => {
               Sign In
             </Button>
           </Box>
+
+          <Box component="form" onSubmit={onGoogleSignIn} sx={{ mt: 1 }}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In With Google
+            </Button>
+          </Box>
         </Box>
       </Paper>
     </Container>

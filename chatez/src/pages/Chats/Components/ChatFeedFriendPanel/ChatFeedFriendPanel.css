@@ -132,4 +132,20 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  gap: 1px;
+}
+
+#message-button {
+  /* Your existing styles */
+  transition: background-color 0.2s ease;
+}
+
+#message-button.selected-friend {
+  background-color: #506256; /* Light gray background for selected friend */
+  border-left: 3px solid #2196f3; /* Blue accent line */
+}
+
+/* Optional hover effect for non-selected friends */
+#message-button:not(.selected-friend):hover {
+  background-color: #506256;
 }

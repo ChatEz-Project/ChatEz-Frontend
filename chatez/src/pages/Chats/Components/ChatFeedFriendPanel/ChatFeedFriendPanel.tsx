@@ -114,6 +114,27 @@ const ChatFeedFriendPanel: React.FC<ChatFeedFriendPanelProps> = ({
     return <Redirect to="/" />;
   };
 
+  const lastActive = (friend: User) => {
+    const today = new Date();
+    const lastActive = new Date(friend.lastActive);
+
+    // Compare if the dates are the same (ignoring time)
+    if (today.toDateString() === lastActive.toDateString()) {
+      // If same date, show time
+      return lastActive.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
+    } else {
+      // If different date, show date
+      return lastActive.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+      });
+    }
+  };
+
   return (
     <div
       className={
@@ -160,28 +181,7 @@ const ChatFeedFriendPanel: React.FC<ChatFeedFriendPanelProps> = ({
               <div className="message-content">
                 <div className="message-header">
                   <p id="username">{friend.displayName}</p>
-                  <span className="timestamp">
-                    {(() => {
-                      const today = new Date();
-                      const lastActive = new Date(friend.lastActive);
-
-                      // Compare if the dates are the same (ignoring time)
-                      if (today.toDateString() === lastActive.toDateString()) {
-                        // If same date, show time
-                        return lastActive.toLocaleTimeString('en-US', {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          hour12: false,
-                        });
-                      } else {
-                        // If different date, show date
-                        return lastActive.toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                        });
-                      }
-                    })()}
-                  </span>
+                  <span className="timestamp">{lastActive(friend)}</span>
                 </div>
                 <p className="message-text">
                   {isLoadingMessages

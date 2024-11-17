@@ -3,13 +3,14 @@ import './ChatFeed.css';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AttachFile, Image, Send } from '@mui/icons-material';
 import { useEffect, useState, useCallback } from 'react';
-import { Message } from '../../../../backend/types';
+import { Message, User } from '../../../../backend/types';
 import ChatFeedProfilePanel from '../ChatFeedProfilePanel/ChatFeedProfilePanel';
 import ChatFeedFriendPanel from '../ChatFeedFriendPanel/ChatFeedFriendPanel';
 import { sendMessage } from '../../../../backend/endpoints';
 import { getFriendMessages } from '../../../../backend/endpoints.utils';
 import { useAuth } from '../../../../contexts/authContext';
 import { useChat } from '../../../../contexts/chatContext';
+import { renderMessagesByDate } from './ChatFeed.utils';
 
 /**
  * ChatFeed Component
@@ -26,8 +27,12 @@ const ChatFeed: React.FC = () => {
   const [message, setMessage] = useState<string>('');
 
   // UI state for collapsible panels
-  const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(true);
+  const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(false);
   const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(true);
+
+  if (error) {
+    console.log(error);
+  }
 
   /**
    * Fetches messages between the current user and their friend
@@ -152,56 +157,13 @@ const ChatFeed: React.FC = () => {
             <MenuIcon id="Collapse-icon" />
           </IconButton>
         </div>
-
         {/* Messages Display Area */}
         <div className="Messages-container">
-          {error && <div className="error-message">{error}</div>}
           <div className="Messages-area">
             {isLoading ? (
               <div className="loading-message">Loading messages...</div>
             ) : (
-              allMessages &&
-              allMessages.map((message, index) =>
-                message.recipient === currentUser?.email ? (
-                  // Received Message
-                  <div className="Message-box-recipient-container" key={index}>
-                    <div className="Message-box-recipient">
-                      <p id="Message">{message.message}</p>
-                    </div>
-                    <div className="Metadata-section-recipient">
-                      <p>
-                        {new Date(message.dateSent).toLocaleTimeString(
-                          'en-US',
-                          {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: false,
-                          }
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  // Sent Message
-                  <div className="Message-box-you-container" key={index}>
-                    <div className="Message-box-you">
-                      <p id="Message">{message.message}</p>
-                    </div>
-                    <div className="Metadata-section-you">
-                      <p>
-                        {new Date(message.dateSent).toLocaleTimeString(
-                          'en-US',
-                          {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: false,
-                          }
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                )
-              )
+              allMessages && renderMessagesByDate(allMessages, currentFriend)
             )}
           </div>
         </div>

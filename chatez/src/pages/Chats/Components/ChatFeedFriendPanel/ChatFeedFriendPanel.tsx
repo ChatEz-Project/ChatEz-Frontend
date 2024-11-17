@@ -2,138 +2,161 @@ import { AddCircleOutline, Settings } from '@mui/icons-material';
 import './ChatFeedFriendPanel.css';
 import { IconButton } from '@mui/material';
 import { useAuth } from '../../../../contexts/authContext';
-import { useEffect, useState } from 'react';
-import userEvent from '@testing-library/user-event';
+import { useEffect, useState, useCallback } from 'react';
 import { getFriends, getUser } from '../../../../backend/endpoints';
 import { User } from '../../../../backend/types';
 import { useChat } from '../../../../contexts/chatContext';
 import { doSignOut } from '../../../../firebase/auth';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { getFriendLatestMessage } from '../../../../backend/endpoints.utils';
+import { searchedFriends } from './ChatFeedFriendPanel.utils';
 
 interface ChatFeedFriendPanelProps {
   className?: string;
 }
 
+/**
+ * ChatFeedFriendPanel component displays a list of friends with their latest messages
+ * and provides search, messaging, and profile management functionality.
+ */
 const ChatFeedFriendPanel: React.FC<ChatFeedFriendPanelProps> = ({
   className,
 }) => {
+  const history = useHistory();
   const { currentUserAccessToken, currentUser } = useAuth();
-  const [userProfileUrl, setUserProfileUrl] = useState<string | null>();
-  const [userDisplayName, setUserDisplayName] = useState<string | null>();
-  const [friendsList, setFriendsList] = useState<User[]>();
   const { setCurrentFriend, currentFriend, loadMessages, setLoadMessages } =
     useChat();
+
+  // User and friends state
+  const [userProfileUrl, setUserProfileUrl] = useState<string>('');
+  const [userDisplayName, setUserDisplayName] = useState<string>('');
+  const [originalFriendsList, setOriginalFriendsList] = useState<User[]>([]);
+  const [displayedFriends, setDisplayedFriends] = useState<User[]>([]);
+  const [searchValue, setSearchValue] = useState<string>('');
   const [latestMessages, setLatestMessages] = useState<{
     [email: string]: string;
   }>({});
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
 
-  // Fetch user profile and friends list
-  useEffect(() => {
-    const fetchProfileUrl = async () => {
-      if (currentUser && currentUserAccessToken) {
-        try {
-          const user = await getUser(currentUserAccessToken, currentUser.email);
-          setUserProfileUrl(user.photoUrl);
-          setUserDisplayName(user.displayName);
-          const friends = await getFriends(currentUserAccessToken);
-          setFriendsList(friends);
-        } catch (error) {
-          console.error('Error fetching user profile:', error);
-        }
-      }
-    };
+  /**
+   * Fetches user profile and friends list from the backend
+   * Updates local state with user information and friends list
+   */
+  const fetchProfileAndFriends = useCallback(async () => {
+    if (!currentUser || !currentUserAccessToken) return;
 
-    fetchProfileUrl();
+    try {
+      const user = await getUser(currentUserAccessToken, currentUser.email);
+      setUserProfileUrl(user.photoUrl);
+      setUserDisplayName(user.displayName);
+      const friends = await getFriends(currentUserAccessToken);
+      setOriginalFriendsList(friends);
+      setDisplayedFriends(friends);
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    }
   }, [currentUser, currentUserAccessToken]);
 
-  // Set default current friend if none selected
-  useEffect(() => {
-    if (friendsList?.length && !currentFriend) {
-      setCurrentFriend(friendsList[0]);
+  /**
+   * Retrieves the latest message for each friend in the friends list
+   * Updates latestMessages state with the retrieved messages
+   */
+  const loadLatestMessages = useCallback(async () => {
+    if (
+      !originalFriendsList.length ||
+      !currentUserAccessToken ||
+      !currentUser ||
+      isLoadingMessages
+    ) {
+      return;
     }
-  }, [friendsList, currentFriend, setCurrentFriend]);
 
-  // Handle message loading
+    setIsLoadingMessages(true);
+    try {
+      const messages: { [email: string]: string } = {};
+      await Promise.all(
+        originalFriendsList.map(async (friend) => {
+          const message = await getFriendLatestMessage(
+            currentUserAccessToken,
+            friend.email,
+            currentUser.email
+          );
+          messages[friend.email] = message || '';
+        })
+      );
+      setLatestMessages(messages);
+    } catch (error) {
+      console.error('Error loading messages:', error);
+    } finally {
+      setIsLoadingMessages(false);
+      setLoadMessages(false);
+    }
+  }, [
+    currentUser,
+    currentUserAccessToken,
+    originalFriendsList,
+    isLoadingMessages,
+    setLoadMessages,
+  ]);
+
+  // Initialize profile and friends data
   useEffect(() => {
-    const loadLatestMessages = async () => {
-      if (
-        !friendsList ||
-        !currentUserAccessToken ||
-        !currentUser ||
-        isLoadingMessages
-      ) {
-        return;
-      }
+    fetchProfileAndFriends();
+  }, [fetchProfileAndFriends]);
 
-      setIsLoadingMessages(true);
-      try {
-        const messages: { [email: string]: string } = {};
-        await Promise.all(
-          friendsList.map(async (friend) => {
-            const message = await getFriendLatestMessage(
-              currentUserAccessToken,
-              friend.email,
-              currentUser.email
-            );
-            messages[friend.email] = message || '';
-          })
-        );
-        setLatestMessages(messages);
-      } catch (error) {
-        console.error('Error loading messages:', error);
-      } finally {
-        setIsLoadingMessages(false);
-        setLoadMessages(false);
-      }
-    };
+  // Set default friend when list is loaded
+  useEffect(() => {
+    if (originalFriendsList.length && !currentFriend) {
+      setCurrentFriend(originalFriendsList[0]);
+    }
+  }, [originalFriendsList, currentFriend, setCurrentFriend]);
 
+  // Load messages when triggered
+  useEffect(() => {
     if (loadMessages) {
       loadLatestMessages();
     }
-  }, [
-    loadMessages,
-    friendsList,
-    currentUserAccessToken,
-    currentUser,
-    setLoadMessages,
-    isLoadingMessages,
-  ]);
+  }, [loadMessages, loadLatestMessages]);
 
-  const openSettings = () => {
-    console.log('Settings opened!');
-  };
+  /**
+   * Updates search results as user types
+   */
+  const handleSearch = useCallback(
+    (newSearchValue: string) => {
+      setSearchValue(newSearchValue);
+      setDisplayedFriends(searchedFriends(newSearchValue, originalFriendsList));
+    },
+    [originalFriendsList]
+  );
 
-  const addFriend = () => {
-    console.log('Add friend box opened!');
-  };
-
+  /**
+   * Handles user logout and redirects to home page
+   */
   const handleLogout = () => {
     doSignOut();
-    return <Redirect to="/" />;
+    history.push('/');
   };
 
-  const lastActive = (friend: User) => {
+  /**
+   * Formats the last active time/date for a friend
+   * Returns time for today's activity, date for previous days
+   */
+  const getLastActive = useCallback((friend: User) => {
     const today = new Date();
     const lastActive = new Date(friend.lastActive);
 
-    // Compare if the dates are the same (ignoring time)
     if (today.toDateString() === lastActive.toDateString()) {
-      // If same date, show time
       return lastActive.toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit',
         hour12: false,
       });
-    } else {
-      // If different date, show date
-      return lastActive.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-      });
     }
-  };
+    return lastActive.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    });
+  }, []);
 
   return (
     <div
@@ -141,65 +164,71 @@ const ChatFeedFriendPanel: React.FC<ChatFeedFriendPanelProps> = ({
         className ? `ChatFeedFriendPanel ${className}` : 'ChatFeedFriendPanel'
       }
     >
+      {/* User Profile Header */}
       <h3>
         <img
           id="Profile-icon"
-          src={userProfileUrl ? userProfileUrl : undefined}
+          src={userProfileUrl || undefined}
           alt="Display icon"
         />
         {userDisplayName}
       </h3>
       <hr />
 
+      {/* Search and Add Friend Section */}
       <div className="Top-section">
-        <input id="SearchUser-input" placeholder="Search user..." />
-        <IconButton onClick={addFriend}>
+        <input
+          id="SearchUser-input"
+          placeholder="Search user..."
+          onChange={(e) => handleSearch(e.target.value)}
+          value={searchValue}
+        />
+        <IconButton onClick={() => console.log('Add friend box opened!')}>
           <AddCircleOutline id="AddFriends-button" />
         </IconButton>
       </div>
 
+      {/* Friends List */}
       <div className="messages-container">
-        {friendsList &&
-          friendsList.map((friend, index) => (
-            <button
-              id="message-button"
-              key={index}
-              className={
-                currentFriend?.email === friend.email ? 'selected-friend' : ''
-              }
-              onClick={() => {
-                setCurrentFriend(friend);
-              }}
-            >
-              <div className="profile-pic-container">
-                <img
-                  id="ProfilePic-icon"
-                  src={friend.photoUrl}
-                  alt="Profile icon"
-                />
+        {displayedFriends.map((friend) => (
+          <button
+            id="message-button"
+            key={friend.email}
+            className={
+              currentFriend?.email === friend.email ? 'selected-friend' : ''
+            }
+            onClick={() => setCurrentFriend(friend)}
+          >
+            <div className="profile-pic-container">
+              <img
+                id="ProfilePic-icon"
+                src={friend.photoUrl}
+                alt="Profile icon"
+              />
+            </div>
+            <div className="message-content">
+              <div className="message-header">
+                <p id="username">{friend.displayName}</p>
+                <span className="timestamp">{getLastActive(friend)}</span>
               </div>
-              <div className="message-content">
-                <div className="message-header">
-                  <p id="username">{friend.displayName}</p>
-                  <span className="timestamp">{lastActive(friend)}</span>
-                </div>
-                <p className="message-text">
-                  {isLoadingMessages
-                    ? 'Loading...'
-                    : latestMessages[friend.email] || 'No messages'}
-                </p>
-              </div>
-            </button>
-          ))}
+              <p className="message-text">
+                {isLoadingMessages
+                  ? 'Loading...'
+                  : latestMessages[friend.email] || 'No messages'}
+              </p>
+            </div>
+          </button>
+        ))}
       </div>
 
+      {/* Footer Controls */}
       <div>
         <hr />
         <div className="Bottom-section">
           <button id="Logout-button" onClick={handleLogout}>
             Logout
           </button>
-          <IconButton onClick={openSettings}>
+          <IconButton onClick={() => console.log('Settings opened!')}>
             <Settings id="Settings-button" />
           </IconButton>
         </div>

@@ -3,14 +3,14 @@ import './ChatFeed.css';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AttachFile, Image, Send } from '@mui/icons-material';
 import { useEffect, useState, useCallback } from 'react';
-import { Message, User } from '../../../../backend/types';
+import { Message } from '../../../../backend/types';
 import ChatFeedProfilePanel from '../ChatFeedProfilePanel/ChatFeedProfilePanel';
 import ChatFeedFriendPanel from '../ChatFeedFriendPanel/ChatFeedFriendPanel';
 import { sendMessage } from '../../../../backend/endpoints';
 import { getFriendMessages } from '../../../../backend/endpoints.utils';
 import { useAuth } from '../../../../contexts/authContext';
-import { useChat } from '../../../../contexts/chatContext';
 import { renderMessagesByDate } from './ChatFeed.utils';
+import { useChat } from '../../../../contexts/chatContext/index';
 
 /**
  * ChatFeed Component

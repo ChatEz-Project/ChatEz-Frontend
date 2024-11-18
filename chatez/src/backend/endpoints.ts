@@ -54,7 +54,7 @@ export const getFriends = async (authToken: string) => {
 
     return friends;
   } catch (error) {
-    console.error('Error fetching messages:', error);
+    console.error('Error fetching friends:', error);
     throw error;
   }
 };
@@ -73,7 +73,7 @@ export const addFriend = async (authToken: string, friendEmail: string) => {
 
     return response.data;
   } catch (error) {
-    console.error('Error fetching messages:', error);
+    console.error('Error adding friend:', error);
     throw error;
   }
 };
@@ -92,7 +92,7 @@ export const removeFriend = async (authToken: string, friendEmail: string) => {
 
     return response.data;
   } catch (error) {
-    console.error('Error fetching messages:', error);
+    console.error('Error removing friend:', error);
     throw error;
   }
 };
@@ -119,7 +119,7 @@ export const getUser = async (authToken: string, userEmail: string | null) => {
 
     return friends;
   } catch (error) {
-    console.error('Error fetching messages:', error);
+    console.error('Error fetching user:', error);
     throw error;
   }
 };
@@ -144,7 +144,7 @@ export const sendMessage = async (
 
     return response.data;
   } catch (error) {
-    console.error('Error fetching messages:', error);
+    console.error('Error sending message:', error);
     throw error;
   }
 };

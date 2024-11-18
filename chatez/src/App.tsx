@@ -7,7 +7,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import HomePage from './pages/chats';
+import ChatPage from './pages/Chats/chats';
 import { useAuth } from './contexts/authContext';
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
         {!userLoggedIn ? <Redirect to="/" /> : null}
         <Switch>
           <Route exact path="/" component={LoginPage} />
-          {userLoggedIn && <Route exact path="/home" component={HomePage} />}
+          {userLoggedIn && <Route exact path="/chats" component={ChatPage} />}
 
           {/* 
             TODO: 

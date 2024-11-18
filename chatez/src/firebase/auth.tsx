@@ -30,7 +30,6 @@ export const doSignInWithEmailAndPassword = async (
 export const doSignInWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   const result = await signInWithPopup(auth, provider);
-  // TODO - sent the result to the fire store
   return result;
 };
 

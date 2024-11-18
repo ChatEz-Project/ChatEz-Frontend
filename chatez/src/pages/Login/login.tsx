@@ -56,7 +56,7 @@ const LoginPage: React.FC = () => {
   };
 
   if (userLoggedIn) {
-    return <Redirect to="/home" />;
+    return <Redirect to="/chats" />;
   }
 
   return (
@@ -104,6 +104,17 @@ const LoginPage: React.FC = () => {
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In
+            </Button>
+          </Box>
+
+          <Box component="form" onSubmit={onGoogleSignIn} sx={{ mt: 1 }}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In With Google
             </Button>
           </Box>
         </Box>

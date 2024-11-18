@@ -1,10 +1,12 @@
+@import '../../global.css';
+
 .LoginPage {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #33383b;
-  flex-direction: column; /* Stack the form and google button vertically */
+  background-color: var(--background-color);
+  flex-direction: column;
 }
 
 #Logo {
@@ -18,7 +20,7 @@
   width: fit-content;
   padding: 16px;
   background-color: #545e63;
-  border-radius: 20px;
+  border-radius: var(--border-radius);
   border: solid black 1px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -35,7 +37,7 @@
   padding: 8px;
   margin-bottom: 16px;
   border: 1px solid #ccc;
-  border-radius: 25px;
+  border-radius: var(--border-radius);
   font-size: 18px;
 }
 
@@ -72,7 +74,7 @@ h2 {
   padding: 10px;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   font-size: 16px;
   cursor: pointer;
 }
@@ -81,7 +83,7 @@ h2 {
   background-color: #43a656;
   font-size: 18px;
   width: 50%;
-  border-radius: 20px;
+  border-radius: var(--border-radius);
 }
 
 .google-button {

@@ -1,6 +1,7 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginPage from './pages/Login/login';
+import SignUp from './pages/SignUp/SignUp';
 import {
   BrowserRouter as Router,
   Switch,
@@ -19,14 +20,8 @@ function App() {
         {!userLoggedIn ? <Redirect to="/" /> : null}
         <Switch>
           <Route exact path="/" component={LoginPage} />
+          <Route exact path="/SignUp" component={SignUp} />
           {userLoggedIn && <Route exact path="/chats" component={ChatPage} />}
-
-          {/* 
-            TODO: 
-              - Logout page
-              - Chat page
-              - SignUp page
-          */}
         </Switch>
       </Router>
     </div>

@@ -1,24 +1,34 @@
+/* Main container */
 .Chat-feed-container {
   display: flex;
-  flex-direction: row;
   min-height: 100vh;
+  width: 100%;
 }
 
+/* Main chat area */
 .Chat-feed {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  flex: 1;
   min-height: 100vh;
+  margin-left: 280px; /* Width of friend panel */
+  margin-right: 280px; /* Width of profile panel */
+  position: relative;
 }
 
+/* Top header */
 .Top-panel {
   background-color: #788b7e;
-  padding: 30px;
+  padding: 15px 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 100%;
   height: 80px;
+  box-sizing: border-box;
 }
 
 .Top-panel h3 {
@@ -26,12 +36,6 @@
   text-align: center;
   flex: 1;
   font-size: 24px;
-}
-
-#CollapseRightPanel-button,
-#CollapseLeftPanel-button {
-  color: white;
-  font-size: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,113 +47,219 @@
   margin-right: 10px;
 }
 
-#Collapse-icon {
-  font-size: 40px;
-}
-
+/* Messages area */
 .Messages-container {
   flex: 1;
   background-color: #c3d1c7;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 1% 30%;
-  margin-bottom: 50px;
+  padding: 20px;
+  overflow-y: auto;
+  height: calc(
+    100vh - 160px
+  ); /* 160px = top panel (80px) + bottom panel (80px) */
+  padding-top: 80px; /* Height of top panel */
 }
 
 .Messages-area {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  min-height: 100%; /* Ensures messages fill the container */
+  justify-content: flex-end; /* Pushes messages to the bottom when not enough content */
+  padding-bottom: 20px; /* Adds space below the last message */
+}
+
+/* Add these for the scroll ref div */
+.scroll-spacer {
+  height: 20px; /* Adds padding after last message */
   width: 100%;
 }
 
-.Message-box-recipient-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 10px;
+/* Smooth scrolling */
+.Messages-area {
+  scroll-behavior: smooth;
 }
 
-.Message-box-recipient {
-  background-color: #43a656;
-  max-width: 200px;
-  margin: 0;
-  padding: 10px;
-  padding-bottom: 0px;
-  border-radius: 30px;
-  margin-right: auto;
-  word-wrap: break-word;
-}
-
-.Metadata-section-recipient {
-  margin-top: 5px;
-  color: #888;
-  text-align: left;
-  font-size: 0.8em;
-}
-
+/* Message bubbles */
+.Message-box-recipient-container,
 .Message-box-you-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
   margin-bottom: 10px;
+  max-width: 60%;
 }
 
+.Message-box-you-container {
+  align-items: flex-end;
+  margin-left: auto;
+}
+
+.Message-box-recipient-container {
+  align-items: flex-start;
+  margin-right: auto;
+}
+
+.Message-box-recipient,
 .Message-box-you {
   background-color: #43a656;
-  max-width: 200px;
-  margin: 0;
-  padding: 10px;
-  padding-bottom: 0px;
-  border-radius: 30px;
-  margin-left: auto;
+  padding: 10px 15px;
+  border-radius: 10px;
   word-wrap: break-word;
 }
 
+.Metadata-section-recipient,
 .Metadata-section-you {
   margin-top: 5px;
   color: #888;
-  text-align: right;
   font-size: 0.8em;
 }
 
 #Message {
   color: white;
+  margin: 0;
 }
 
-/* .Bottom-panel {
-    background-color: #788B7E;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 10px;
-} */
+.message-image-container {
+  margin: 5px 0;
+  max-width: 300px; /* Limit maximum width */
+}
 
+.message-image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.message-image:hover {
+  transform: scale(1.02);
+}
+
+/* Bottom input area */
+.Bottom-panel {
+  background-color: #788b7e;
+  position: fixed;
+  bottom: 0;
+  left: 280px;
+  right: 280px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1;
+  transition: left 0.3s ease, right 0.3s ease; /* Add transition for smooth panel movement */
+}
+
+#Chat-input {
+  flex: 1;
+  border-radius: 15px;
+  padding: 10px 15px;
+  border: none;
+  outline: none;
+}
+
+/* When left panel is collapsed */
+.ChatFeedFriendPanel-Collapsed + .Chat-feed {
+  margin-left: 0;
+}
+
+.ChatFeedFriendPanel-Collapsed + .Chat-feed .Bottom-panel {
+  left: 0;
+}
+
+/* When right panel is collapsed */
+.Chat-feed:has(+ .ChatFeedProfilePanel-Collapsed) {
+  margin-right: 0;
+}
+
+.Chat-feed:has(+ .ChatFeedProfilePanel-Collapsed) .Bottom-panel {
+  right: 0;
+}
+
+/* When both panels are collapsed */
+.ChatFeedFriendPanel-Collapsed
+  + .Chat-feed:has(+ .ChatFeedProfilePanel-Collapsed)
+  .Bottom-panel {
+  left: 0;
+  right: 0;
+}
+
+/* Panel collapse states - update transform values to match panel widths */
+.ChatFeedFriendPanel-Collapsed {
+  transform: translateX(-280px); /* Match the panel width */
+}
+
+.ChatFeedProfilePanel-Collapsed {
+  transform: translateX(280px); /* Match the panel width */
+}
+
+/* Add transitions */
+.ChatFeedFriendPanel,
+.ChatFeedProfilePanel,
+.Chat-feed {
+  transition: all 0.3s ease;
+}
+
+/* Responsive adjustments when panels are collapsed */
+.Chat-feed {
+  transition: margin 0.3s ease;
+}
+/* Icons */
+#CollapseRightPanel-button,
+#CollapseLeftPanel-button {
+  color: white;
+}
+
+#Collapse-icon,
 #AttachFile-icon,
 #Image-icon,
 #Send-icon {
-  font-size: 40px;
+  font-size: 24px;
 }
 
 #Send-icon:hover {
   color: #24d147;
 }
 
-#Chat-input {
-  border-radius: 30px;
-  padding: 5px;
-  padding-left: 10px;
-  width: 400px;
+/* Panel collapse states */
+.ChatFeedFriendPanel-Collapsed {
+  transform: translateX(-100%);
 }
 
-.Bottom-panel {
-  background-color: #788b7e;
-  position: fixed;
-  bottom: 0;
+.ChatFeedProfilePanel-Collapsed {
+  transform: translateX(100%);
+}
+
+/* Add transitions */
+.ChatFeedFriendPanel,
+.ChatFeedProfilePanel,
+.Chat-feed {
+  transition: all 0.3s ease;
+}
+
+/* Responsive adjustments when panels are collapsed */
+.Chat-feed {
+  transition: margin 0.3s ease;
+}
+
+/* When left panel is collapsed */
+.ChatFeedFriendPanel-Collapsed + .Chat-feed {
+  margin-left: 0;
+}
+
+/* When right panel is collapsed */
+.Chat-feed:has(+ .ChatFeedProfilePanel-Collapsed) {
+  margin-right: 0;
+}
+
+/* When both panels are collapsed, adjust bottom panel */
+.ChatFeedFriendPanel-Collapsed
+  + .Chat-feed:has(+ .ChatFeedProfilePanel-Collapsed)
+  .Bottom-panel {
   left: 0;
-  width: 100%;
-  padding: 10px;
-  z-index: 1; /* Lower than ChatFeedProfilePanel and ChatFeedFriendPanel */
+  right: 0;
 }

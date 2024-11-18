@@ -5,12 +5,16 @@
   flex-direction: column;
   padding: 20px;
   z-index: 2;
-  position: relative;
-  height: 100vh; /* Make sure the panel takes the full height */
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  transition: transform 0.3s ease;
+  overflow-y: auto;
 }
 
 .ChatFeedProfilePanel-Collapsed {
-  display: none;
+  transform: translateX(280px);
 }
 
 #Profile-picture {
@@ -18,50 +22,100 @@
   width: 170px;
   border-radius: 50%;
   display: block;
-  margin: 0 auto;
-  margin-bottom: 10px;
+  margin: 0 auto 20px;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.2);
 }
 
 #Display-name {
   color: white;
+  text-align: center;
+  margin: 0 0 20px;
+  font-size: 24px;
+  font-weight: 600;
 }
 
 hr {
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.2);
   border: none;
-  height: 3px;
+  height: 2px;
+  margin: 20px 0;
+  width: 100%;
 }
 
 h2 {
   text-align: left;
   color: white;
   font-size: 20px;
+  margin: 15px 0;
+  font-weight: 500;
+}
+
+.SharedImages {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-bottom: 20px;
+  overflow-x: auto;
 }
 
 .SharedImage {
-  margin-bottom: 10px;
-  height: 50px;
   width: 50px;
+  height: 50px;
+  min-width: 50px; /* Prevents the image from shrinking */
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.SharedImage:hover {
+  transform: scale(1.05);
+}
+
+.Documents {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .Document {
   color: white;
   text-align: left;
-  font-size: 12px;
+  font-size: 14px;
+  padding: 8px 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.Document:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .Bottom-buttons {
-  margin-top: auto; /* Push the buttons to the bottom */
+  margin-top: auto;
   display: flex;
-  flex-direction: column; /* Stack the buttons vertically */
-  gap: 10px; /* Add some space between the buttons */
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 20px;
 }
 
 #DeleteConversation-button,
 #RemoveFriend-button {
-  border-radius: 25px;
-  padding: 5px 20px;
+  border-radius: 15px;
+  padding: 10px 20px;
   font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  text-align: center;
+  font-weight: 500;
 }
 
 #DeleteConversation-button {
@@ -69,7 +123,65 @@ h2 {
   color: white;
 }
 
+#DeleteConversation-button:hover {
+  background-color: #6b9cfa;
+  transform: translateY(-1px);
+}
+
 #RemoveFriend-button {
   background-color: #dd6666;
   color: white;
+}
+
+#RemoveFriend-button:hover {
+  background-color: #d15151;
+  transform: translateY(-1px);
+}
+
+/* Scrollbar styling */
+.ChatFeedProfilePanel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ChatFeedProfilePanel::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.ChatFeedProfilePanel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.ChatFeedProfilePanel::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Handle overflow content */
+.ChatFeedProfilePanel > * {
+  max-width: 100%;
+}
+
+/* Media query for smaller height screens */
+@media screen and (max-height: 700px) {
+  #Profile-picture {
+    height: 120px;
+    width: 120px;
+    margin-bottom: 15px;
+  }
+
+  #Display-name {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  h2 {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+
+  .Bottom-buttons {
+    padding-top: 15px;
+    gap: 8px;
+  }
 }

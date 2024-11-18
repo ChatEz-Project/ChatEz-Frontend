@@ -45,15 +45,16 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
       <hr />
 
       <h2>Shared Images</h2>
-
-      {sharedImages.map((image, index) => (
-        <img
-          key={index}
-          className="SharedImage"
-          src={image}
-          alt="Shared Media"
-        />
-      ))}
+      <div className="SharedImages">
+        {sharedImages.map((image, index) => (
+          <img
+            key={index}
+            className="SharedImage"
+            src={image}
+            alt="Shared Media"
+          />
+        ))}
+      </div>
 
       <h2>Shared Files</h2>
 

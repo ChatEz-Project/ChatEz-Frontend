@@ -5,16 +5,21 @@
   flex-direction: column;
   padding: 20px;
   z-index: 2;
-  position: relative;
-  height: 100vh; /* Ensure it takes up the full height of the viewport */
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  transition: transform 0.3s ease;
+  overflow-y: auto;
 }
 
 .ChatFeedFriendPanel-Collapsed {
-  display: none;
+  transform: translateX(-280px);
 }
 
 .ChatFeedFriendPanel h3 {
   color: white;
+  margin: 0;
 }
 
 .Bottom-section {
@@ -22,27 +27,45 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: auto; /* Pushes it to the bottom of the container */
+  margin-top: auto;
+  padding-top: 20px;
 }
 
 #Logout-button {
-  border-radius: 25px;
+  border-radius: 15px;
   font-size: 20px;
   color: white;
   background-color: #43a656;
   width: 80%;
   padding: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#Logout-button:hover {
+  background-color: #3b8f4a;
 }
 
 #Settings-button {
   font-size: 40px;
   color: #43a656;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+#Settings-button:hover {
+  color: #3b8f4a;
 }
 
 #SearchUser-input {
-  border-radius: 25px;
-  padding: 5px;
-  padding-left: 10px;
+  border-radius: 15px;
+  padding: 8px 15px;
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: white;
+  margin: 10px 0;
 }
 
 .Top-section {
@@ -56,13 +79,21 @@
 #AddFriends-button {
   font-size: 30px;
   color: white;
+  cursor: pointer;
+  transition: color 0.2s ease;
 }
 
-#ProfilePic-icon {
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  background-color: #3a483f;
+#AddFriends-button:hover {
+  color: #43a656;
+}
+
+.messages-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  gap: 1px;
+  margin: 10px 0;
 }
 
 #message-button {
@@ -77,15 +108,23 @@
   cursor: pointer;
   outline: none;
   padding: 10px;
+  transition: background-color 0.2s ease, border-left 0.2s ease;
+  margin-bottom: 2px;
 }
 
 #message-button:hover {
   background-color: #506256;
 }
 
+#message-button.selected-friend {
+  background-color: #506256;
+  border-left: 3px solid #2196f3;
+}
+
 .profile-pic-container {
   width: 40px;
   height: 40px;
+  min-width: 40px;
   margin-right: 10px;
 }
 
@@ -93,6 +132,7 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .message-content {
@@ -100,6 +140,7 @@
   flex-direction: column;
   justify-content: center;
   flex-grow: 1;
+  min-width: 0; /* Allows text truncation to work */
 }
 
 .message-header {
@@ -113,39 +154,42 @@
   font-weight: bold;
   margin: 0;
   color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .timestamp {
   font-size: 0.85em;
   color: #aaaaaa;
   margin: 0;
+  white-space: nowrap;
 }
 
 .message-text {
   font-size: 0.9em;
   color: #dddddd;
   margin: 4px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.messages-container {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  gap: 1px;
+/* Scrollbar styling */
+.messages-container::-webkit-scrollbar {
+  width: 6px;
 }
 
-#message-button {
-  /* Your existing styles */
-  transition: background-color 0.2s ease;
+.messages-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
 }
 
-#message-button.selected-friend {
-  background-color: #506256; /* Light gray background for selected friend */
-  border-left: 3px solid #2196f3; /* Blue accent line */
+.messages-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
 }
 
-/* Optional hover effect for non-selected friends */
-#message-button:not(.selected-friend):hover {
-  background-color: #506256;
+.messages-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }

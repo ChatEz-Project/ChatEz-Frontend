@@ -2,7 +2,7 @@ import { IconButton } from '@mui/material';
 import './ChatFeed.css';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AttachFile, Image, Send } from '@mui/icons-material';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { Message } from '../../../../backend/types';
 import ChatFeedProfilePanel from '../ChatFeedProfilePanel/ChatFeedProfilePanel';
 import ChatFeedFriendPanel from '../ChatFeedFriendPanel/ChatFeedFriendPanel';
@@ -18,6 +18,7 @@ import { useChat } from '../../../../contexts/chatContext/index';
 const ChatFeed: React.FC = () => {
   // Authentication and user context
   const { currentUserAccessToken, userLoggedIn, currentUser } = useAuth();
+  currentUserAccessToken ?? console.log(currentUserAccessToken);
   const { currentFriend, loadMessages, setLoadMessages } = useChat();
 
   // Component state
@@ -27,8 +28,15 @@ const ChatFeed: React.FC = () => {
   const [message, setMessage] = useState<string>('');
 
   // UI state for collapsible panels
-  const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(false);
+  const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(true);
   const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(true);
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // auto scroll to bottom
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   if (error) {
     console.log(error);
@@ -84,6 +92,11 @@ const ChatFeed: React.FC = () => {
       fetchMessages();
     }
   }, [loadMessages, fetchMessages]);
+
+  // Scroll to bottom auto when messages are updated
+  useEffect(() => {
+    scrollToBottom();
+  }, [allMessages]);
 
   /**
    * UI Event Handlers
@@ -165,6 +178,7 @@ const ChatFeed: React.FC = () => {
             ) : (
               allMessages && renderMessagesByDate(allMessages, currentFriend)
             )}
+            <div className="scroll-spacer" ref={messagesEndRef} />
           </div>
         </div>
 
@@ -177,6 +191,7 @@ const ChatFeed: React.FC = () => {
             <AttachFile id="AttachFile-icon" />
           </IconButton>
           <input
+            type="text"
             id="Chat-input"
             placeholder="Enter Chat..."
             onChange={(e) => setMessage(e.target.value)}

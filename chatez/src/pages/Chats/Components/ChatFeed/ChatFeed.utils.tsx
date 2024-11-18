@@ -1,3 +1,4 @@
+import { imageListClasses } from '@mui/material';
 import { Message, User } from '../../../../backend/types';
 
 /**
@@ -55,6 +56,16 @@ export const renderMessagesByDate = (
             <div className="Message-box-recipient">
               <p id="Message">{message.message}</p>
             </div>
+            {message.fileUrl && (
+              <div className="message-image-container">
+                <img
+                  src={message.fileUrl}
+                  alt="Message attachment"
+                  className="message-image"
+                />
+              </div>
+            )}
+
             <div className="Metadata-section-recipient">
               <p>
                 {new Date(message.dateSent).toLocaleTimeString('en-US', {
@@ -62,6 +73,7 @@ export const renderMessagesByDate = (
                   minute: '2-digit',
                   hour12: false,
                 })}
+                {message.read ? ' 🙉' : ' 🙈'}
               </p>
             </div>
           </div>
@@ -73,6 +85,7 @@ export const renderMessagesByDate = (
             </div>
             <div className="Metadata-section-you">
               <p>
+                {message.read ? '🙉 ' : '🙈 '}
                 {new Date(message.dateSent).toLocaleTimeString('en-US', {
                   hour: '2-digit',
                   minute: '2-digit',

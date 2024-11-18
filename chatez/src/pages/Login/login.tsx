@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
-  Container,
-  TextField,
-  Typography,
-  Paper,
-} from '@mui/material';
-import {
   doSignInWithEmailAndPassword,
   doSignInWithGoogle,
 } from '../../firebase/auth';
 import { Redirect } from 'react-router-dom';
 import { useAuth } from '../../contexts/authContext';
 import { useGoogleTranslate } from '../../globalHooks/useGoogleTranslations';
+import Logo from '../../media/logo.svg';
+import Divider from '../../media/OrDivider.svg';
+import { useHistory } from 'react-router-dom'; // Import useHistory for React Router v5
+
+import './Login.css';
 
 const LoginPage: React.FC = () => {
   const { userLoggedIn } = useAuth();
+  const history = useHistory(); // Initialize useHistory hook
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -59,67 +57,57 @@ const LoginPage: React.FC = () => {
     return <Redirect to="/chats" />;
   }
 
-  return (
-    <Container component="main" maxWidth="xs">
-      <Paper elevation={3} sx={{ mt: 8, p: 4 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Typography component="h1" variant="h5">
-            Log In
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-          </Box>
+  const GotoSignUpPage = () => {
+    history.push('/SignUp'); // Use history.push() to navigate to the /SignUp route
+  };
 
-          <Box component="form" onSubmit={onGoogleSignIn} sx={{ mt: 1 }}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In With Google
-            </Button>
-          </Box>
-        </Box>
-      </Paper>
-    </Container>
+  return (
+    <div className="LoginPage">
+      <div className="LoginPage-form">
+        <div className="login-header">
+          <img id="Logo" src={Logo} alt="Logo" />
+        </div>
+        <form className="login-form" onSubmit={handleSubmit}>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email Address"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit" className="submit-button">
+            Login
+          </button>
+        </form>
+      </div>
+      <div className="SignInWithGoogle-container">
+        <h2>
+          Don't have an account?{' '}
+          <span>
+            <button id="SignUp-button" onClick={GotoSignUpPage}>
+              <u>Sign Up</u>
+            </button>
+          </span>
+        </h2>
+        <img id="Divider" src={Divider} alt="Divider" />
+        <form className="google-signin-form" onSubmit={onGoogleSignIn}>
+          <button type="submit" className="google-button">
+            Sign In With Google
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 

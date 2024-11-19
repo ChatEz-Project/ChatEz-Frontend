@@ -107,7 +107,12 @@
   background-color: #43a656;
   padding: 10px 15px;
   border-radius: 10px;
+  max-width: 350px;
   word-wrap: break-word;
+}
+
+.Message-box-you {
+  background-color: #054118;
 }
 
 .Metadata-section-recipient,

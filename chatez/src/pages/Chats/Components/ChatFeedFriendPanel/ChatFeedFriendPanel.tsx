@@ -10,6 +10,7 @@ import { doSignOut } from '../../../../firebase/auth';
 import { useHistory } from 'react-router-dom';
 import { getFriendLatestMessage } from '../../../../backend/endpoints.utils';
 import { searchedFriends } from './ChatFeedFriendPanel.utils';
+import SettingsPanel from "../../../settings/Settings";
 
 interface ChatFeedFriendPanelProps {
   className?: string;
@@ -228,7 +229,10 @@ const ChatFeedFriendPanel: React.FC<ChatFeedFriendPanelProps> = ({
           <button id="Logout-button" onClick={handleLogout}>
             Logout
           </button>
-          <IconButton onClick={() => console.log('Settings opened!')}>
+          <IconButton onClick={() => {
+            <SettingsPanel user={currentUser} />
+            console.log('Settings opened!');
+          }}>
             <Settings id="Settings-button" />
           </IconButton>
         </div>

@@ -29,7 +29,10 @@ npm install
 ### Run the App:
 ```bash
 cd chatez
-npm start
+NODE_ENV=development npm start
+  - will use localhost backend
+NODE_ENV=production npm start
+  - will use cloud run deployed backend
 ```
 
 After deployment, access the application via the provided URL.

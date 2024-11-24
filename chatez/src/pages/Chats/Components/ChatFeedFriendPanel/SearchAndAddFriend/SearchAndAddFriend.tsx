@@ -4,6 +4,14 @@ import { AddCircleOutline } from '@mui/icons-material';
 import './SearchAndAddFriend.css';
 import { useChat } from '../../../../../contexts/chatContext';
 
+/**
+ * Props interface for the SearchAndAddFriend component
+ * @interface SearchAndAddFriendProps
+ * @property {string | null | undefined} currentUserEmail - Email of the currently logged in user
+ * @property {function} onSearch - Callback function to handle search input changes
+ * @property {function} onAddFriend - Async callback function to handle adding a new friend
+ * @property {string} searchValue - Current value of the search input
+ */
 interface SearchAndAddFriendProps {
   currentUserEmail: string | null | undefined;
   onSearch: (searchValue: string) => void;
@@ -11,26 +19,46 @@ interface SearchAndAddFriendProps {
   searchValue: string;
 }
 
+/**
+ * SearchAndAddFriend Component
+ * Provides functionality to search existing friends and add new friends via email
+ * Features include:
+ * - Search input for filtering friends
+ * - Add friend button that opens a popup
+ * - Email validation
+ * - Error handling for invalid inputs
+ * - Responsive popup positioning
+ */
 const SearchAndAddFriend: React.FC<SearchAndAddFriendProps> = ({
   currentUserEmail,
   onSearch,
   onAddFriend,
   searchValue,
 }) => {
+  // State management for friend addition form
   const [friendInput, setFriendInput] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [ignoreNextClick, setIgnoreNextClick] = useState(false);
+
+  // Refs for popup positioning and click detection
   const popupRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Context hooks for managing friend addition status
   const {
     setAddedOrDeleted,
     setAddedOrDeletedFriend,
     setAddedOrRemovedFriendStatus,
   } = useChat();
 
+  // State for popup position
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
+  /**
+   * Updates the popup position relative to the add friend button
+   * Called when popup opens and on window resize
+   */
   const updatePopupPosition = () => {
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
@@ -41,12 +69,14 @@ const SearchAndAddFriend: React.FC<SearchAndAddFriendProps> = ({
     }
   };
 
+  // Update popup position when it opens
   useEffect(() => {
     if (isPopupOpen) {
       updatePopupPosition();
     }
   }, [isPopupOpen]);
 
+  // Handle window resize events
   useEffect(() => {
     if (isPopupOpen) {
       const handleResize = () => updatePopupPosition();
@@ -55,6 +85,7 @@ const SearchAndAddFriend: React.FC<SearchAndAddFriendProps> = ({
     }
   }, [isPopupOpen]);
 
+  // Handle clicks outside the popup to close it
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (ignoreNextClick) {
@@ -73,6 +104,7 @@ const SearchAndAddFriend: React.FC<SearchAndAddFriendProps> = ({
     };
 
     if (isPopupOpen) {
+      // Delay to prevent immediate closure
       setTimeout(() => {
         document.addEventListener('mousedown', handleClickOutside);
       }, 0);
@@ -83,11 +115,20 @@ const SearchAndAddFriend: React.FC<SearchAndAddFriendProps> = ({
     };
   }, [isPopupOpen, ignoreNextClick]);
 
+  /**
+   * Validates email format using regex
+   * @param {string} email - Email address to validate
+   * @returns {boolean} - True if email is valid, false otherwise
+   */
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
+  /**
+   * Handles changes to the friend email input
+   * Validates input and sets appropriate error messages
+   */
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const email = e.target.value;
     setFriendInput(email);
@@ -106,6 +147,11 @@ const SearchAndAddFriend: React.FC<SearchAndAddFriendProps> = ({
     }
   };
 
+  /**
+   * Handles the friend addition process
+   * Validates input, calls the onAddFriend callback,
+   * and manages UI state (errors, success, popup visibility)
+   */
   const handleAddFriend = async () => {
     if (!friendInput) {
       setError('Please enter an email address');
@@ -127,9 +173,11 @@ const SearchAndAddFriend: React.FC<SearchAndAddFriendProps> = ({
 
     try {
       await onAddFriend(friendInput);
+      // Reset form state on success
       setFriendInput('');
       setError(null);
       setIsPopupOpen(false);
+      // Update chat context
       setAddedOrDeleted('added');
       setAddedOrDeletedFriend(friendInput);
       setAddedOrRemovedFriendStatus(true);
@@ -141,12 +189,15 @@ const SearchAndAddFriend: React.FC<SearchAndAddFriendProps> = ({
 
   return (
     <div className="Top-section">
+      {/* Search input for existing friends */}
       <input
         id="SearchUser-input"
         placeholder="Search user..."
         onChange={(e) => onSearch(e.target.value)}
         value={searchValue}
       />
+
+      {/* Add friend button that triggers popup */}
       <IconButton
         ref={buttonRef}
         onClick={() => {
@@ -157,6 +208,7 @@ const SearchAndAddFriend: React.FC<SearchAndAddFriendProps> = ({
         <AddCircleOutline id="AddFriends-button" />
       </IconButton>
 
+      {/* Popup form for adding new friend */}
       <div
         ref={popupRef}
         className={`popup-content ${isPopupOpen ? 'active' : ''}`}

@@ -1,22 +1,19 @@
-/* Main container */
 .Chat-feed-container {
   display: flex;
   min-height: 100vh;
   width: 100%;
 }
 
-/* Main chat area */
 .Chat-feed {
   flex: 1;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  margin-left: 280px; /* Width of friend panel */
-  margin-right: 280px; /* Width of profile panel */
+  margin-left: 280px;
+  margin-right: 280px;
   position: relative;
 }
 
-/* Top header */
 .Top-panel {
   background-color: #788b7e;
   padding: 15px 30px;
@@ -47,7 +44,6 @@
   margin-right: 10px;
 }
 
-/* Messages area */
 .Messages-container {
   flex: 1;
   background-color: #c3d1c7;
@@ -55,10 +51,8 @@
   flex-direction: column;
   padding: 20px;
   overflow-y: auto;
-  height: calc(
-    100vh - 160px
-  ); /* 160px = top panel (80px) + bottom panel (80px) */
-  padding-top: 80px; /* Height of top panel */
+  height: calc(100vh - 160px);
+  padding-top: 80px;
 }
 
 .Messages-area {
@@ -67,52 +61,72 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  min-height: 100%; /* Ensures messages fill the container */
-  justify-content: flex-end; /* Pushes messages to the bottom when not enough content */
-  padding-bottom: 20px; /* Adds space below the last message */
-}
-
-/* Add these for the scroll ref div */
-.scroll-spacer {
-  height: 20px; /* Adds padding after last message */
-  width: 100%;
-}
-
-/* Smooth scrolling */
-.Messages-area {
+  min-height: 100%;
+  justify-content: flex-end;
+  padding-bottom: 20px;
   scroll-behavior: smooth;
 }
 
-/* Message bubbles */
+.scroll-spacer {
+  height: 20px;
+  width: 100%;
+}
+
 .Message-box-recipient-container,
 .Message-box-you-container {
+  position: relative;
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   max-width: 60%;
+  padding-top: 15px;
 }
 
 .Message-box-you-container {
   align-items: flex-end;
   margin-left: auto;
+  padding-right: 15px;
 }
 
 .Message-box-recipient-container {
   align-items: flex-start;
   margin-right: auto;
+  padding-left: 15px;
+}
+
+.action-icon.MuiIconButton-root {
+  background-color: #788b7e;
+  color: white;
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+  margin: 2px;
+  transition: background-color 0.2s ease;
+}
+
+.action-icon.MuiIconButton-root:hover {
+  background-color: #43a656;
 }
 
 .Message-box-recipient,
 .Message-box-you {
   background-color: #43a656;
   padding: 10px 15px;
+  word-wrap: break-word;
+  max-width: 100%;
+  position: relative;
   border-radius: 10px;
   max-width: 350px;
-  word-wrap: break-word;
+}
+
+.Message-box-recipient {
+  border-radius: 0 10px 10px 10px;
+  padding-left: 15px;
 }
 
 .Message-box-you {
-  background-color: #054118;
+  border-radius: 10px 0 10px 10px;
+  padding-left: 15px;
 }
 
 .Metadata-section-recipient,
@@ -127,24 +141,6 @@
   margin: 0;
 }
 
-.message-image-container {
-  margin: 5px 0;
-  max-width: 300px; /* Limit maximum width */
-}
-
-.message-image {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.message-image:hover {
-  transform: scale(1.02);
-}
-
-/* Bottom input area */
 .Bottom-panel {
   background-color: #788b7e;
   position: fixed;
@@ -156,7 +152,7 @@
   align-items: center;
   gap: 10px;
   z-index: 1;
-  transition: left 0.3s ease, right 0.3s ease; /* Add transition for smooth panel movement */
+  transition: left 0.3s ease, right 0.3s ease;
 }
 
 #Chat-input {
@@ -167,56 +163,30 @@
   outline: none;
 }
 
-/* When left panel is collapsed */
 .ChatFeedFriendPanel-Collapsed + .Chat-feed {
   margin-left: 0;
+}
+
+.Chat-feed:has(+ .ChatFeedProfilePanel-Collapsed) {
+  margin-right: 0;
 }
 
 .ChatFeedFriendPanel-Collapsed + .Chat-feed .Bottom-panel {
   left: 0;
 }
 
-/* When right panel is collapsed */
-.Chat-feed:has(+ .ChatFeedProfilePanel-Collapsed) {
-  margin-right: 0;
-}
-
 .Chat-feed:has(+ .ChatFeedProfilePanel-Collapsed) .Bottom-panel {
   right: 0;
 }
 
-/* When both panels are collapsed */
-.ChatFeedFriendPanel-Collapsed
-  + .Chat-feed:has(+ .ChatFeedProfilePanel-Collapsed)
-  .Bottom-panel {
-  left: 0;
-  right: 0;
-}
-
-/* Panel collapse states - update transform values to match panel widths */
-.ChatFeedFriendPanel-Collapsed {
-  transform: translateX(-280px); /* Match the panel width */
-}
-
-.ChatFeedProfilePanel-Collapsed {
-  transform: translateX(280px); /* Match the panel width */
-}
-
-/* Add transitions */
 .ChatFeedFriendPanel,
 .ChatFeedProfilePanel,
 .Chat-feed {
   transition: all 0.3s ease;
 }
 
-/* Responsive adjustments when panels are collapsed */
-.Chat-feed {
-  transition: margin 0.3s ease;
-}
-/* Icons */
-#CollapseRightPanel-button,
-#CollapseLeftPanel-button {
-  color: white;
+#Send-icon:hover {
+  color: #24d147;
 }
 
 #Collapse-icon,
@@ -226,45 +196,102 @@
   font-size: 24px;
 }
 
-#Send-icon:hover {
-  color: #24d147;
+#CollapseRightPanel-button,
+#CollapseLeftPanel-button {
+  color: white;
 }
 
-/* Panel collapse states */
-.ChatFeedFriendPanel-Collapsed {
-  transform: translateX(-100%);
+.message-actions {
+  display: none;
+  position: absolute;
+  top: -30px;
+  gap: 5px;
+  flex-direction: row;
+  z-index: 100;
+  background-color: rgba(120, 139, 126, 0.9);
+  padding: 5px;
 }
 
-.ChatFeedProfilePanel-Collapsed {
-  transform: translateX(100%);
-}
-
-/* Add transitions */
-.ChatFeedFriendPanel,
-.ChatFeedProfilePanel,
-.Chat-feed {
-  transition: all 0.3s ease;
-}
-
-/* Responsive adjustments when panels are collapsed */
-.Chat-feed {
-  transition: margin 0.3s ease;
-}
-
-/* When left panel is collapsed */
-.ChatFeedFriendPanel-Collapsed + .Chat-feed {
-  margin-left: 0;
-}
-
-/* When right panel is collapsed */
-.Chat-feed:has(+ .ChatFeedProfilePanel-Collapsed) {
-  margin-right: 0;
-}
-
-/* When both panels are collapsed, adjust bottom panel */
-.ChatFeedFriendPanel-Collapsed
-  + .Chat-feed:has(+ .ChatFeedProfilePanel-Collapsed)
-  .Bottom-panel {
-  left: 0;
+.Message-box-you-container .message-actions {
   right: 0;
+  margin-right: 15px;
+  border-radius: 15px 15px 0px 15px;
+}
+
+.Message-box-recipient-container .message-actions {
+  left: 0;
+  margin-left: 15px;
+  border-radius: 15px 15px 15px 0px;
+}
+
+.Message-box-recipient-container:hover .message-actions,
+.Message-box-you-container:hover .message-actions,
+.message-actions:hover {
+  display: flex;
+}
+
+.action-bubble {
+  display: none;
+  position: absolute;
+  background-color: #43a656;
+  color: white;
+  padding: 12px;
+  border-radius: 15px;
+  font-size: 14px;
+  width: 200px;
+  transform: translateY(-50%);
+  z-index: 90;
+}
+
+.Message-box-you-container .action-bubble {
+  left: calc(100%);
+}
+
+.Message-box-recipient-container .action-bubble {
+  right: calc(100%);
+}
+
+.Message-box-you-container:hover .action-bubble,
+.Message-box-recipient-container:hover .action-bubble,
+.action-bubble:hover {
+  display: block;
+}
+
+.action-bubble-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.action-bubble-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 16px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.close-button:hover {
+  opacity: 1;
+}
+
+.action-bubble-content {
+  word-wrap: break-word;
+}
+
+.lastSeen {
+  color: rgb(78, 76, 76);
+  font-size: 1rem;
+  margin: 0;
 }

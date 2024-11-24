@@ -3,7 +3,7 @@ import './ChatFeed.css';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AttachFile, Image, Send } from '@mui/icons-material';
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { Message } from '../../../../backend/types';
+import { Message, User } from '../../../../backend/types';
 import { sendMessage } from '../../../../backend/endpoints';
 import { getFriendMessages } from '../../../../backend/endpoints.utils';
 import { useAuth } from '../../../../contexts/authContext';
@@ -42,6 +42,24 @@ const ChatFeed: React.FC = () => {
   if (error) {
     console.log(error);
   }
+
+  // get last active
+  const getLastActive = useCallback((friend: User) => {
+    const today = new Date();
+    const lastActive = new Date(friend.lastActive);
+
+    if (today.toDateString() === lastActive.toDateString()) {
+      return lastActive.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
+    }
+    return lastActive.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    });
+  }, []);
 
   /**
    * Fetches messages between the current user and their friend
@@ -156,14 +174,23 @@ const ChatFeed: React.FC = () => {
           <IconButton id="CollapseLeftPanel-button" onClick={collapseLeftPanel}>
             <MenuIcon id="Collapse-icon" />
           </IconButton>
+
           <h3>
             <img
               id="Profile-icon"
               src={currentFriend?.photoUrl}
               alt="Display icon"
             />
-            {currentFriend?.displayName}
+            <div>
+              {currentFriend?.displayName}
+              {currentFriend && (
+                <p className="lastSeen">
+                  last seen: {getLastActive(currentFriend)}
+                </p>
+              )}
+            </div>
           </h3>
+
           <IconButton
             id="CollapseRightPanel-button"
             onClick={collapseRightPanel}

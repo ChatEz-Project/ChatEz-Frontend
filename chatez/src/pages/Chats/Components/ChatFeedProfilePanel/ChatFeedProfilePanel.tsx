@@ -1,6 +1,8 @@
 import './ChatFeedProfilePanel.css';
 import { useEffect, useState } from 'react';
 import { useChat } from '../../../../contexts/chatContext';
+import { useAuth } from '../../../../contexts/authContext';
+import { removeFriend } from '../../../../backend/endpoints';
 
 interface ChatFeedProfilePanelProps {
   className?: string;
@@ -12,13 +14,16 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
   const [sharedImages, setSharedImages] = useState<string[]>([]);
   const [sharedFiles, setSharedFiles] = useState<string[]>([]);
   const { currentFriend } = useChat();
+  const { currentUserAccessToken } = useAuth();
 
   const deleteConversation = () => {
     console.log('Conversation has been deleted');
   };
 
-  const removeFriend = () => {
-    console.log('Friend has been removed');
+  const removeFriendHandler = async () => {
+    if (currentUserAccessToken && currentFriend) {
+      await removeFriend(currentUserAccessToken, currentFriend.email);
+    }
   };
 
   useEffect(() => {
@@ -69,7 +74,7 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
           Delete Convo
         </button>
 
-        <button id="RemoveFriend-button" onClick={removeFriend}>
+        <button id="RemoveFriend-button" onClick={removeFriendHandler}>
           Remove Friend
         </button>
       </div>

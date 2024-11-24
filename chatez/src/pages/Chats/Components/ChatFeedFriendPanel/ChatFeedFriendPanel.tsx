@@ -1,15 +1,16 @@
-import { AddCircleOutline, Settings } from '@mui/icons-material';
+import { Settings } from '@mui/icons-material';
 import './ChatFeedFriendPanel.css';
 import { IconButton } from '@mui/material';
 import { useAuth } from '../../../../contexts/authContext';
 import { useEffect, useState, useCallback } from 'react';
-import { getFriends, getUser } from '../../../../backend/endpoints';
+import { addFriend, getFriends, getUser } from '../../../../backend/endpoints';
 import { Message, User } from '../../../../backend/types';
 import { useChat } from '../../../../contexts/chatContext';
 import { doSignOut } from '../../../../firebase/auth';
 import { useHistory } from 'react-router-dom';
 import { getFriendLatestMessage } from '../../../../backend/endpoints.utils';
 import { searchedFriends } from './ChatFeedFriendPanel.utils';
+import SearchAndAddFriend from './SearchAndAddFriend/SearchAndAddFriend';
 
 interface ChatFeedFriendPanelProps {
   className?: string;
@@ -215,6 +216,13 @@ const ChatFeedFriendPanel: React.FC<ChatFeedFriendPanelProps> = ({
     });
   }, []);
 
+  const handleAddFriendCallback = async (email: string) => {
+    if (currentUserAccessToken) {
+      await addFriend(currentUserAccessToken, email);
+      await fetchProfileAndFriends();
+    }
+  };
+
   return (
     <div
       className={
@@ -231,17 +239,12 @@ const ChatFeedFriendPanel: React.FC<ChatFeedFriendPanelProps> = ({
       </h3>
       <hr />
 
-      <div className="Top-section">
-        <input
-          id="SearchUser-input"
-          placeholder="Search user..."
-          onChange={(e) => handleSearch(e.target.value)}
-          value={searchValue}
-        />
-        <IconButton onClick={() => console.log('Add friend box opened!')}>
-          <AddCircleOutline id="AddFriends-button" />
-        </IconButton>
-      </div>
+      <SearchAndAddFriend
+        currentUserEmail={currentUser?.email}
+        onSearch={handleSearch}
+        onAddFriend={handleAddFriendCallback}
+        searchValue={searchValue}
+      />
 
       <div className="messages-container">
         {displayedFriends.map((friend) => (

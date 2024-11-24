@@ -1,4 +1,4 @@
-import { IconButton } from '@mui/material';
+import { Alert, IconButton, Snackbar } from '@mui/material';
 import './ChatFeed.css';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AttachFile, Image, Send } from '@mui/icons-material';
@@ -20,7 +20,17 @@ const ChatFeed: React.FC = () => {
   // Authentication and user context
   const { currentUserAccessToken, userLoggedIn, currentUser } = useAuth();
   currentUserAccessToken ?? console.log(currentUserAccessToken);
-  const { currentFriend, loadMessages, setLoadMessages } = useChat();
+  const {
+    currentFriend,
+    loadMessages,
+    setLoadMessages,
+    addedOrRemovedFriendStatus,
+    setAddedOrRemovedFriendStatus,
+    addedOrDeletedFriend,
+    setAddedOrDeletedFriend,
+    setAddedOrDeleted,
+    addedOrDeleted,
+  } = useChat();
 
   // Component state
   const [allMessages, setAllMessages] = useState<Message[] | undefined>([]);
@@ -28,6 +38,7 @@ const ChatFeed: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string>('');
 
+  const [alertOpen, setAlertOpen] = useState(false);
   // UI state for collapsible panels
   const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(true);
   const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(true);
@@ -157,6 +168,25 @@ const ChatFeed: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (addedOrRemovedFriendStatus) {
+      setAlertOpen(true);
+    }
+  }, [addedOrRemovedFriendStatus]);
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setAddedOrRemovedFriendStatus(false);
+    setAddedOrDeletedFriend('');
+    setAlertOpen(false);
+    setAddedOrDeleted('');
+  };
+
   return (
     <div className="Chat-feed-container">
       {/* Friend List Panel */}
@@ -235,6 +265,28 @@ const ChatFeed: React.FC = () => {
           </IconButton>
         </div>
       </div>
+      {addedOrRemovedFriendStatus && (
+        <Snackbar
+          open={alertOpen}
+          autoHideDuration={6000}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity={'success'}>
+            {`${addedOrDeletedFriend} ${addedOrDeleted} successfully`}
+          </Alert>
+        </Snackbar>
+      )}
+      {!addedOrRemovedFriendStatus && (
+        <Snackbar
+          open={alertOpen}
+          autoHideDuration={6000}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity={'error'}>
+            {`Failed to ${addedOrDeleted} ${addedOrDeletedFriend}`}
+          </Alert>
+        </Snackbar>
+      )}
 
       {/* Profile Panel */}
       <ChatFeedProfilePanel

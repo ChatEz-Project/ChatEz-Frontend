@@ -6,6 +6,12 @@ interface ChatContextType {
   setCurrentFriend: (user: User | undefined) => void;
   loadMessages: boolean;
   setLoadMessages: (user: boolean) => void;
+  setAddedOrRemovedFriendStatus: (removeFriendStatus: boolean) => void;
+  addedOrRemovedFriendStatus: boolean;
+  addedOrDeletedFriend: string;
+  setAddedOrDeletedFriend: (friend: string) => void;
+  addedOrDeleted: string;
+  setAddedOrDeleted: (addedOrDeleted: string) => void;
 }
 
 interface ChatProviderProps {
@@ -25,12 +31,22 @@ export function useChat(): ChatContextType {
 export function ChatProvider({ children }: ChatProviderProps): JSX.Element {
   const [currentFriend, setCurrentFriend] = useState<User | undefined>();
   const [loadMessages, setLoadMessages] = useState<boolean>(true);
+  const [addedOrRemovedFriendStatus, setAddedOrRemovedFriendStatus] =
+    useState(false);
+  const [addedOrDeletedFriend, setAddedOrDeletedFriend] = useState('');
+  const [addedOrDeleted, setAddedOrDeleted] = useState('');
 
   const value: ChatContextType = {
     currentFriend,
     setCurrentFriend,
     loadMessages,
     setLoadMessages,
+    addedOrRemovedFriendStatus,
+    setAddedOrRemovedFriendStatus,
+    addedOrDeletedFriend,
+    setAddedOrDeletedFriend,
+    addedOrDeleted,
+    setAddedOrDeleted,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

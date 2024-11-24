@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { IconButton } from '@mui/material';
 import { AddCircleOutline } from '@mui/icons-material';
 import './SearchAndAddFriend.css';
+import { useChat } from '../../../../../contexts/chatContext';
 
 interface SearchAndAddFriendProps {
   currentUserEmail: string | null | undefined;
@@ -21,6 +22,11 @@ const SearchAndAddFriend: React.FC<SearchAndAddFriendProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [ignoreNextClick, setIgnoreNextClick] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
+  const {
+    setAddedOrDeleted,
+    setAddedOrDeletedFriend,
+    setAddedOrRemovedFriendStatus,
+  } = useChat();
 
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -41,7 +47,6 @@ const SearchAndAddFriend: React.FC<SearchAndAddFriendProps> = ({
     }
   }, [isPopupOpen]);
 
-  // Add window resize handler
   useEffect(() => {
     if (isPopupOpen) {
       const handleResize = () => updatePopupPosition();
@@ -125,6 +130,9 @@ const SearchAndAddFriend: React.FC<SearchAndAddFriendProps> = ({
       setFriendInput('');
       setError(null);
       setIsPopupOpen(false);
+      setAddedOrDeleted('added');
+      setAddedOrDeletedFriend(friendInput);
+      setAddedOrRemovedFriendStatus(true);
     } catch (error) {
       setError('Failed to add friend. Please try again.');
       console.error('Error adding friend:', error);

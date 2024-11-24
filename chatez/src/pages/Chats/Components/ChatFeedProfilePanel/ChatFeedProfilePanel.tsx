@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useChat } from '../../../../contexts/chatContext';
 import { useAuth } from '../../../../contexts/authContext';
 import { removeFriend } from '../../../../backend/endpoints';
+import { Alert } from '@mui/material';
 
 interface ChatFeedProfilePanelProps {
   className?: string;
@@ -13,7 +14,12 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
 }) => {
   const [sharedImages, setSharedImages] = useState<string[]>([]);
   const [sharedFiles, setSharedFiles] = useState<string[]>([]);
-  const { currentFriend } = useChat();
+  const {
+    currentFriend,
+    setAddedOrRemovedFriendStatus,
+    setAddedOrDeletedFriend,
+    setAddedOrDeleted,
+  } = useChat();
   const { currentUserAccessToken } = useAuth();
 
   const deleteConversation = () => {
@@ -22,7 +28,14 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
 
   const removeFriendHandler = async () => {
     if (currentUserAccessToken && currentFriend) {
-      await removeFriend(currentUserAccessToken, currentFriend.email);
+      try {
+        await removeFriend(currentUserAccessToken, currentFriend.email);
+        setAddedOrRemovedFriendStatus(true);
+        setAddedOrDeletedFriend(currentFriend.displayName);
+        setAddedOrDeleted('removed');
+      } catch (error) {
+        setAddedOrRemovedFriendStatus(false);
+      }
     }
   };
 

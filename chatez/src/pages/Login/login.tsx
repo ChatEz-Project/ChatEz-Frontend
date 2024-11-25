@@ -11,6 +11,7 @@ import Divider from '../../media/OrDivider.svg';
 import { useHistory } from 'react-router-dom';
 
 import './Login.css';
+import { Google } from '@mui/icons-material';
 
 const LoginPage: React.FC = () => {
   const { userLoggedIn } = useAuth();
@@ -103,6 +104,7 @@ const LoginPage: React.FC = () => {
         <img id="Divider" src={Divider} alt="Divider" />
         <form className="google-signin-form" onSubmit={onGoogleSignIn}>
           <button type="submit" className="google-button">
+            <Google id="Google-icon" />
             Sign In With Google
           </button>
         </form>

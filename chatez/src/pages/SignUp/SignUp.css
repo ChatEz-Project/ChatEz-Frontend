@@ -112,6 +112,10 @@ h2 {
   cursor: pointer;
 }
 
+#Google-icon {
+  margin-right: 5px;
+}
+
 .submit-button {
   background-color: #43a656;
   font-size: 18px;

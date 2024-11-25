@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { doSignInWithGoogle } from '../../firebase/auth';
 import './SignUp.css';
 import { useEffect, useRef, useState } from 'react';
-import { CameraAlt } from '@mui/icons-material';
+import { CameraAlt, Google } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 
 const SignUp: React.FC = () => {
@@ -110,13 +110,14 @@ const SignUp: React.FC = () => {
           Already have an account?{' '}
           <span>
             <button id="Login-button" onClick={GotoSignUpPage}>
-              <u>Log In</u>
+              <u>Sign In</u>
             </button>
           </span>
         </h2>
         <form className="google-signin-form" onSubmit={onGoogleSignIn}>
           <button type="submit" className="google-button">
-            Sign Up With Google
+            <Google id="Google-icon" />
+            Sign In With Google
           </button>
         </form>
       </div>

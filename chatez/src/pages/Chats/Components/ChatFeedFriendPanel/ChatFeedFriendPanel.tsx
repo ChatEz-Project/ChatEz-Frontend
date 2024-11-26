@@ -56,8 +56,12 @@ const ChatFeedFriendPanel: React.FC<ChatFeedFriendPanelProps> = ({
 }) => {
   const history = useHistory();
   const { currentUserAccessToken, currentUser } = useAuth();
-  const { setCurrentFriend, currentFriend, loadMessages, setLoadMessages } =
-    useChat();
+  const {
+    selectedUser: currentFriend,
+    setSelectedUser: setCurrentFriend,
+    isLoadingMessages: loadMessages,
+    setIsLoadingMessages: setLoadMessages,
+  } = useChat();
 
   const [userDisplayName, setUserDisplayName] = useState<string>('');
   const [originalFriendsList, setOriginalFriendsList] = useState<User[]>([]);

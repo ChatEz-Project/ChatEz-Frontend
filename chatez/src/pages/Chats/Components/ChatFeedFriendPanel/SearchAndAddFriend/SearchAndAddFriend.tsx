@@ -45,14 +45,9 @@ const SearchAndAddFriend: React.FC<SearchAndAddFriendProps> = ({
   const popupRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Context hooks for managing friend addition status
-  const {
-    setAddedOrDeleted,
-    setAddedOrDeletedFriend,
-    setAddedOrRemovedFriendStatus,
-  } = useChat();
+  // chat context
+  const { setFriendActionStatus } = useChat();
 
-  // State for popup position
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
 
   /**
@@ -64,7 +59,7 @@ const SearchAndAddFriend: React.FC<SearchAndAddFriendProps> = ({
       const rect = buttonRef.current.getBoundingClientRect();
       setPopupPosition({
         top: rect.top,
-        left: rect.right + 20, // 20px offset from the button
+        left: rect.right + 20,
       });
     }
   };
@@ -173,14 +168,16 @@ const SearchAndAddFriend: React.FC<SearchAndAddFriendProps> = ({
 
     try {
       await onAddFriend(friendInput);
-      // Reset form state on success
+      // Reset form state
       setFriendInput('');
       setError(null);
       setIsPopupOpen(false);
-      // Update chat context
-      setAddedOrDeleted('added');
-      setAddedOrDeletedFriend(friendInput);
-      setAddedOrRemovedFriendStatus(true);
+      // Update friend action status
+      setFriendActionStatus({
+        isVisible: true,
+        action: 'added',
+        username: friendInput,
+      });
     } catch (error) {
       setError('Failed to add friend. Please try again.');
       console.error('Error adding friend:', error);

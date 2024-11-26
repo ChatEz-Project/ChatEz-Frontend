@@ -14,12 +14,7 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
 }) => {
   const [sharedImages, setSharedImages] = useState<string[]>([]);
   const [sharedFiles, setSharedFiles] = useState<string[]>([]);
-  const {
-    currentFriend,
-    setAddedOrRemovedFriendStatus,
-    setAddedOrDeletedFriend,
-    setAddedOrDeleted,
-  } = useChat();
+  const { selectedUser: currentFriend, setFriendActionStatus } = useChat();
   const { currentUserAccessToken } = useAuth();
 
   const deleteConversation = () => {
@@ -30,11 +25,18 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
     if (currentUserAccessToken && currentFriend) {
       try {
         await removeFriend(currentUserAccessToken, currentFriend.email);
-        setAddedOrRemovedFriendStatus(true);
-        setAddedOrDeletedFriend(currentFriend.displayName);
-        setAddedOrDeleted('removed');
+        setFriendActionStatus({
+          isVisible: true,
+          action: 'removed',
+          username: currentFriend.displayName,
+        });
       } catch (error) {
-        setAddedOrRemovedFriendStatus(false);
+        // Handle failure case
+        setFriendActionStatus({
+          isVisible: true,
+          action: '',
+          username: currentFriend.displayName,
+        });
       }
     }
   };

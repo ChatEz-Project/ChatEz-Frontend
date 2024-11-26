@@ -1,17 +1,23 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { User } from '../../backend/types';
 
+type FriendAction = 'added' | 'removed' | '';
+
 interface ChatContextType {
-  currentFriend: User | undefined;
-  setCurrentFriend: (user: User | undefined) => void;
-  loadMessages: boolean;
-  setLoadMessages: (user: boolean) => void;
-  setAddedOrRemovedFriendStatus: (removeFriendStatus: boolean) => void;
-  addedOrRemovedFriendStatus: boolean;
-  addedOrDeletedFriend: string;
-  setAddedOrDeletedFriend: (friend: string) => void;
-  addedOrDeleted: string;
-  setAddedOrDeleted: (addedOrDeleted: string) => void;
+  selectedUser: User | undefined;
+  setSelectedUser: (user: User | undefined) => void;
+  isLoadingMessages: boolean;
+  setIsLoadingMessages: (isLoading: boolean) => void;
+  friendActionStatus: {
+    isVisible: boolean;
+    action: FriendAction;
+    username: string;
+  };
+  setFriendActionStatus: (status: {
+    isVisible: boolean;
+    action: FriendAction;
+    username: string;
+  }) => void;
 }
 
 interface ChatProviderProps {
@@ -22,31 +28,28 @@ const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export function useChat(): ChatContextType {
   const context = useContext(ChatContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useChat must be used within a ChatProvider');
   }
   return context;
 }
 
 export function ChatProvider({ children }: ChatProviderProps): JSX.Element {
-  const [currentFriend, setCurrentFriend] = useState<User | undefined>();
-  const [loadMessages, setLoadMessages] = useState<boolean>(true);
-  const [addedOrRemovedFriendStatus, setAddedOrRemovedFriendStatus] =
-    useState(false);
-  const [addedOrDeletedFriend, setAddedOrDeletedFriend] = useState('');
-  const [addedOrDeleted, setAddedOrDeleted] = useState('');
+  const [selectedUser, setSelectedUser] = useState<User | undefined>();
+  const [isLoadingMessages, setIsLoadingMessages] = useState(true);
+  const [friendActionStatus, setFriendActionStatus] = useState({
+    isVisible: false,
+    action: '' as FriendAction,
+    username: '',
+  });
 
   const value: ChatContextType = {
-    currentFriend,
-    setCurrentFriend,
-    loadMessages,
-    setLoadMessages,
-    addedOrRemovedFriendStatus,
-    setAddedOrRemovedFriendStatus,
-    addedOrDeletedFriend,
-    setAddedOrDeletedFriend,
-    addedOrDeleted,
-    setAddedOrDeleted,
+    selectedUser,
+    setSelectedUser,
+    isLoadingMessages,
+    setIsLoadingMessages,
+    friendActionStatus,
+    setFriendActionStatus,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

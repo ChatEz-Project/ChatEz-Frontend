@@ -7,7 +7,6 @@ import { Message, User } from '../../../../backend/types';
 import { sendMessage } from '../../../../backend/endpoints';
 import { getFriendMessages } from '../../../../backend/endpoints.utils';
 import { useAuth } from '../../../../contexts/authContext';
-
 import { useChat } from '../../../../contexts/chatContext/index';
 import ChatFeedFriendPanel from '../ChatFeedFriendPanel/ChatFeedFriendPanel';
 import ChatFeedProfilePanel from '../ChatFeedProfilePanel/ChatFeedProfilePanel';
@@ -20,16 +19,14 @@ const ChatFeed: React.FC = () => {
   // Authentication and user context
   const { currentUserAccessToken, userLoggedIn, currentUser } = useAuth();
   currentUserAccessToken ?? console.log(currentUserAccessToken);
+
+  // Updated chat context usage
   const {
-    currentFriend,
-    loadMessages,
-    setLoadMessages,
-    addedOrRemovedFriendStatus,
-    setAddedOrRemovedFriendStatus,
-    addedOrDeletedFriend,
-    setAddedOrDeletedFriend,
-    setAddedOrDeleted,
-    addedOrDeleted,
+    selectedUser: currentFriend,
+    isLoadingMessages: loadMessages,
+    setIsLoadingMessages: setLoadMessages,
+    friendActionStatus,
+    setFriendActionStatus,
   } = useChat();
 
   // Component state
@@ -169,10 +166,10 @@ const ChatFeed: React.FC = () => {
   };
 
   useEffect(() => {
-    if (addedOrRemovedFriendStatus) {
+    if (friendActionStatus.isVisible) {
       setAlertOpen(true);
     }
-  }, [addedOrRemovedFriendStatus]);
+  }, [friendActionStatus.isVisible]);
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -181,10 +178,12 @@ const ChatFeed: React.FC = () => {
     if (reason === 'clickaway') {
       return;
     }
-    setAddedOrRemovedFriendStatus(false);
-    setAddedOrDeletedFriend('');
+    setFriendActionStatus({
+      isVisible: false,
+      action: '',
+      username: '',
+    });
     setAlertOpen(false);
-    setAddedOrDeleted('');
   };
 
   return (
@@ -265,28 +264,17 @@ const ChatFeed: React.FC = () => {
           </IconButton>
         </div>
       </div>
-      {addedOrRemovedFriendStatus && (
-        <Snackbar
-          open={alertOpen}
-          autoHideDuration={6000}
+
+      <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
           onClose={handleClose}
+          severity={friendActionStatus.action ? 'success' : 'error'}
         >
-          <Alert onClose={handleClose} severity={'success'}>
-            {`${addedOrDeletedFriend} ${addedOrDeleted} successfully`}
-          </Alert>
-        </Snackbar>
-      )}
-      {!addedOrRemovedFriendStatus && (
-        <Snackbar
-          open={alertOpen}
-          autoHideDuration={6000}
-          onClose={handleClose}
-        >
-          <Alert onClose={handleClose} severity={'error'}>
-            {`Failed to ${addedOrDeleted} ${addedOrDeletedFriend}`}
-          </Alert>
-        </Snackbar>
-      )}
+          {friendActionStatus.action
+            ? `${friendActionStatus.username} ${friendActionStatus.action} successfully`
+            : `Failed to perform action for ${friendActionStatus.username}`}
+        </Alert>
+      </Snackbar>
 
       {/* Profile Panel */}
       <ChatFeedProfilePanel

@@ -29,12 +29,9 @@ export const getFriendLatestMessage = async (
         (msg.sender === email && msg.recipient === friendEmail) ||
         (msg.sender === friendEmail && msg.recipient === email)
     );
-
-    return filteredMessages.length > 0
-      ? filteredMessages[filteredMessages.length - 1].message
-      : '';
+    return filteredMessages[filteredMessages.length - 1];
   } catch (error) {
     console.log('Failed to retrieve message: ', error);
-    return '';
+    return null;
   }
 };

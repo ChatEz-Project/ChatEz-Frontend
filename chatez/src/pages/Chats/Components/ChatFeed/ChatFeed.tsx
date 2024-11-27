@@ -1,13 +1,12 @@
-import { IconButton } from '@mui/material';
+import { Alert, IconButton, Snackbar } from '@mui/material';
 import './ChatFeed.css';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AttachFile, Image, Send } from '@mui/icons-material';
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { Message } from '../../../../backend/types';
+import { Message, User } from '../../../../backend/types';
 import { sendMessage } from '../../../../backend/endpoints';
 import { getFriendMessages } from '../../../../backend/endpoints.utils';
 import { useAuth } from '../../../../contexts/authContext';
-
 import { useChat } from '../../../../contexts/chatContext/index';
 import ChatFeedFriendPanel from '../ChatFeedFriendPanel/ChatFeedFriendPanel';
 import ChatFeedProfilePanel from '../ChatFeedProfilePanel/ChatFeedProfilePanel';
@@ -20,7 +19,15 @@ const ChatFeed: React.FC = () => {
   // Authentication and user context
   const { currentUserAccessToken, userLoggedIn, currentUser } = useAuth();
   currentUserAccessToken ?? console.log(currentUserAccessToken);
-  const { currentFriend, loadMessages, setLoadMessages } = useChat();
+
+  // Updated chat context usage
+  const {
+    selectedUser: currentFriend,
+    isLoadingMessages: loadMessages,
+    setIsLoadingMessages: setLoadMessages,
+    friendActionStatus,
+    setFriendActionStatus,
+  } = useChat();
 
   // Component state
   const [allMessages, setAllMessages] = useState<Message[] | undefined>([]);
@@ -28,6 +35,7 @@ const ChatFeed: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string>('');
 
+  const [alertOpen, setAlertOpen] = useState(false);
   // UI state for collapsible panels
   const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(true);
   const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(true);
@@ -42,6 +50,24 @@ const ChatFeed: React.FC = () => {
   if (error) {
     console.log(error);
   }
+
+  // get last active
+  const getLastActive = useCallback((friend: User) => {
+    const today = new Date();
+    const lastActive = new Date(friend.lastActive);
+
+    if (today.toDateString() === lastActive.toDateString()) {
+      return lastActive.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
+    }
+    return lastActive.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    });
+  }, []);
 
   /**
    * Fetches messages between the current user and their friend
@@ -139,6 +165,27 @@ const ChatFeed: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (friendActionStatus.isVisible) {
+      setAlertOpen(true);
+    }
+  }, [friendActionStatus.isVisible]);
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setFriendActionStatus({
+      isVisible: false,
+      action: '',
+      username: '',
+    });
+    setAlertOpen(false);
+  };
+
   return (
     <div className="Chat-feed-container">
       {/* Friend List Panel */}
@@ -156,14 +203,23 @@ const ChatFeed: React.FC = () => {
           <IconButton id="CollapseLeftPanel-button" onClick={collapseLeftPanel}>
             <MenuIcon id="Collapse-icon" />
           </IconButton>
+
           <h3>
             <img
               id="Profile-icon"
               src={currentFriend?.photoUrl}
               alt="Display icon"
             />
-            {currentFriend?.displayName}
+            <div>
+              {currentFriend?.displayName}
+              {currentFriend && (
+                <p className="lastSeen">
+                  last seen: {getLastActive(currentFriend)}
+                </p>
+              )}
+            </div>
           </h3>
+
           <IconButton
             id="CollapseRightPanel-button"
             onClick={collapseRightPanel}
@@ -208,6 +264,17 @@ const ChatFeed: React.FC = () => {
           </IconButton>
         </div>
       </div>
+
+      <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity={friendActionStatus.action ? 'success' : 'error'}
+        >
+          {friendActionStatus.action
+            ? `${friendActionStatus.username} ${friendActionStatus.action} successfully`
+            : `Failed to perform action for ${friendActionStatus.username}`}
+        </Alert>
+      </Snackbar>
 
       {/* Profile Panel */}
       <ChatFeedProfilePanel

@@ -148,3 +148,32 @@ export const sendMessage = async (
     throw error;
   }
 };
+
+export const getMessagesForSidebar = async (authToken: string | null) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/getMessagesForSidebar`,
+      {},
+      {
+        headers: {
+          Authorization: authToken,
+        },
+      }
+    );
+
+    // extract only necessary data
+    const messages: Message[] = response.data.map((message: Message) => ({
+      sender: message.sender,
+      recipient: message.recipient,
+      read: message.read,
+      fileUrl: message.fileUrl,
+      message: message.message,
+      dateSent: message.dateSent,
+    }));
+
+    return messages;
+  } catch (error) {
+    console.error('Error sending message:', error);
+    throw error;
+  }
+};

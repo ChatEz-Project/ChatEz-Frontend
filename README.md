@@ -52,3 +52,4 @@ After deployment, access the application via the provided URL.
 * **Media Sharing**: Send images, files, and more.
 * **Multi-Language Support**: Built-in translation for messages.
 * **Accessibility**: Text-to-speech and AI-generated summaries for easy conversation overview.
+* **Env Based Config**: Will override .env file with env.prod or env.dev based on start mode

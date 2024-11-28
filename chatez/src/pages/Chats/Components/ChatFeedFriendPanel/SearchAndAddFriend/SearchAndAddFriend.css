@@ -1,0 +1,113 @@
+.Top-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1001; /* Ensure it's above other panel elements */
+}
+
+#SearchUser-input {
+  border-radius: 15px;
+  padding: 8px 15px;
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: white;
+  margin: 10px 0;
+}
+
+#AddFriends-button {
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+#AddFriends-button:hover {
+  color: #43a656;
+}
+
+.popup-content {
+  position: fixed; /* Change to fixed */
+  left: 300px; /* Position it right after the ChatFeedFriendPanel */
+  top: 20px; /* Align with the Top-section */
+  background-color: #3a483f;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-5px);
+  transition: all 0.2s ease;
+  z-index: 1002; /* Higher than Top-section */
+}
+
+.popup-content.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.popup-header {
+  color: white;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.popup-input {
+  width: 100%;
+  border-radius: 15px;
+  padding: 8px 15px;
+  border: 2px solid transparent;
+  outline: none;
+  background-color: white;
+  font-size: 14px;
+  margin-bottom: 4px;
+  transition: border-color 0.2s ease;
+}
+
+.popup-input.error {
+  border-color: #ff4444;
+}
+
+.error-message {
+  color: #ff4444;
+  font-size: 12px;
+  margin-bottom: 15px;
+  min-height: 20px;
+}
+
+.popup-button {
+  width: 100%;
+  padding: 8px;
+  border-radius: 15px;
+  font-size: 16px;
+  color: white;
+  background-color: #43a656;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.popup-button:hover {
+  background-color: #3b8f4a;
+}
+
+.popup-button:disabled {
+  background-color: #2c5934;
+  cursor: not-allowed;
+}
+
+.popup-content::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 15px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent #3a483f transparent transparent;
+}

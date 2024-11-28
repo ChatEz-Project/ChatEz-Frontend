@@ -1,6 +1,9 @@
 import './ChatFeedProfilePanel.css';
 import { useEffect, useState } from 'react';
 import { useChat } from '../../../../contexts/chatContext';
+import { useAuth } from '../../../../contexts/authContext';
+import { removeFriend } from '../../../../backend/endpoints';
+import { Alert } from '@mui/material';
 
 interface ChatFeedProfilePanelProps {
   className?: string;
@@ -11,14 +14,31 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
 }) => {
   const [sharedImages, setSharedImages] = useState<string[]>([]);
   const [sharedFiles, setSharedFiles] = useState<string[]>([]);
-  const { currentFriend } = useChat();
+  const { selectedUser: currentFriend, setFriendActionStatus } = useChat();
+  const { currentUserAccessToken } = useAuth();
 
   const deleteConversation = () => {
     console.log('Conversation has been deleted');
   };
 
-  const removeFriend = () => {
-    console.log('Friend has been removed');
+  const removeFriendHandler = async () => {
+    if (currentUserAccessToken && currentFriend) {
+      try {
+        await removeFriend(currentUserAccessToken, currentFriend.email);
+        setFriendActionStatus({
+          isVisible: true,
+          action: 'removed',
+          username: currentFriend.displayName,
+        });
+      } catch (error) {
+        // Handle failure case
+        setFriendActionStatus({
+          isVisible: true,
+          action: '',
+          username: currentFriend.displayName,
+        });
+      }
+    }
   };
 
   useEffect(() => {
@@ -69,7 +89,7 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
           Delete Convo
         </button>
 
-        <button id="RemoveFriend-button" onClick={removeFriend}>
+        <button id="RemoveFriend-button" onClick={removeFriendHandler}>
           Remove Friend
         </button>
       </div>

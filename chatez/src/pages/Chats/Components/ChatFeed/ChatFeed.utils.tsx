@@ -1,5 +1,6 @@
-import { imageListClasses } from '@mui/material';
 import { Message, User } from '../../../../backend/types';
+import './ChatFeed.css';
+import MessageBox from './MessageBox';
 
 /**
  * Groups messages by date and formats them with date headers
@@ -49,53 +50,13 @@ export const renderMessagesByDate = (
       </div>
 
       {/* Messages for this date */}
-      {messages.map((message, index) =>
-        message.sender === currentUser?.email ? (
-          // Received Message
-          <div className="Message-box-recipient-container" key={index}>
-            <div className="Message-box-recipient">
-              <p id="Message">{message.message}</p>
-            </div>
-            {message.fileUrl && (
-              <div className="message-image-container">
-                <img
-                  src={message.fileUrl}
-                  alt="Message attachment"
-                  className="message-image"
-                />
-              </div>
-            )}
-
-            <div className="Metadata-section-recipient">
-              <p>
-                {new Date(message.dateSent).toLocaleTimeString('en-US', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  hour12: false,
-                })}
-                {message.read ? ' 🙉' : ' 🙈'}
-              </p>
-            </div>
-          </div>
-        ) : (
-          // Sent Message
-          <div className="Message-box-you-container" key={index}>
-            <div className="Message-box-you">
-              <p id="Message">{message.message}</p>
-            </div>
-            <div className="Metadata-section-you">
-              <p>
-                {message.read ? '🙉 ' : '🙈 '}
-                {new Date(message.dateSent).toLocaleTimeString('en-US', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  hour12: false,
-                })}
-              </p>
-            </div>
-          </div>
-        )
-      )}
+      {messages.map((message, index) => (
+        <MessageBox
+          key={index}
+          message={message}
+          isRecipient={message.sender === currentUser?.email}
+        />
+      ))}
     </div>
   ));
 };

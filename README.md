@@ -22,15 +22,27 @@ ChatEz is a scalable, real-time web chat application with enhanced features, inc
 
 ### Install Dependencies:
 ```bash
-cd chatez
-npm install
+  cd chatez
+  npm install
 ```
 
 ### Run the App:
 ```bash
-cd chatez
-npm start
-```
+  cd chatez
+``` 
+
+#### Start in DEV mode:
+- ```bash
+      NODE_ENV=development npm start:dev
+  ```
+ - will use backend on localhost
+ 
+#### Start in PROD mode:
+- ```bash
+  NODE_ENV=production npm start:prod
+  ```
+- will use backend on CloudRun
+
 
 After deployment, access the application via the provided URL.
 
@@ -40,3 +52,4 @@ After deployment, access the application via the provided URL.
 * **Media Sharing**: Send images, files, and more.
 * **Multi-Language Support**: Built-in translation for messages.
 * **Accessibility**: Text-to-speech and AI-generated summaries for easy conversation overview.
+* **Environment Based Config**: .env.prod and .env.dev files that override .env file for environment specific behaviour

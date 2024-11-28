@@ -27,7 +27,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start:dev": "env-cmd -f .env -e development react-scripts start",
+    "start:prod": "env-cmd -f .env -e production react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -51,6 +52,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.3.3"
+    "@types/react-router-dom": "^5.3.3",
+    "env-cmd": "^10.1.0"
   }
 }

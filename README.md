@@ -27,19 +27,15 @@ npm install
 ```
 
 ### Run the App:
-```bash
-  cd chatez
-``` 
-
 #### Start in DEV mode:
 - ```bash
-      npm start:dev
+      cd chatez; npm run start:dev
   ```
  - will use backend on localhost
  
 #### Start in PROD mode:
 - ```bash
-  npm start:prod
+      cd chatez; npm start:prod
   ```
 - will use backend on CloudRun
 

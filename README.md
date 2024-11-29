@@ -33,13 +33,13 @@ npm install
 
 #### Start in DEV mode:
 - ```bash
-      NODE_ENV=development npm start:dev
+      npm start:dev
   ```
  - will use backend on localhost
  
 #### Start in PROD mode:
 - ```bash
-  NODE_ENV=production npm start:prod
+  npm start:prod
   ```
 - will use backend on CloudRun
 

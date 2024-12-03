@@ -37,7 +37,7 @@ const ChatFeed: React.FC = () => {
 
   const [alertOpen, setAlertOpen] = useState(false);
   // UI state for collapsible panels
-  const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(true);
+  const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(false);
   const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(true);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -200,7 +200,11 @@ const ChatFeed: React.FC = () => {
       <div className="Chat-feed">
         {/* Chat Header */}
         <div className="Top-panel">
-          <IconButton id="CollapseLeftPanel-button" onClick={collapseLeftPanel}>
+          <IconButton
+            id="CollapseLeftPanel-button"
+            onClick={collapseLeftPanel}
+            title="See friends"
+          >
             <MenuIcon id="Collapse-icon" />
           </IconButton>
 
@@ -223,6 +227,7 @@ const ChatFeed: React.FC = () => {
           <IconButton
             id="CollapseRightPanel-button"
             onClick={collapseRightPanel}
+            title="See profile"
           >
             <MenuIcon id="Collapse-icon" />
           </IconButton>

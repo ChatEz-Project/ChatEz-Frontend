@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom';
 
 import './Login.css';
 import { Google } from '@mui/icons-material';
+import { Alert } from '@mui/material';
 
 const LoginPage: React.FC = () => {
   const { userLoggedIn } = useAuth();
@@ -21,6 +22,8 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
   const { translate, translations } = useGoogleTranslate();
+  const [showAlert, setShowAlert] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     translate('Sign In', 'es');
@@ -31,6 +34,7 @@ const LoginPage: React.FC = () => {
         await doSignInWithEmailAndPassword(email, password);
       } catch (error) {
         console.error('Sign in error:', error);
+        incorrectCredentials();
       } finally {
         setIsSigningIn(false);
       }
@@ -52,6 +56,11 @@ const LoginPage: React.FC = () => {
         console.error('Error signing in with Google:', error);
       });
     }
+  };
+
+  const incorrectCredentials = () => {
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 3000); // Hide after 3 seconds
   };
 
   if (userLoggedIn) {
@@ -91,6 +100,11 @@ const LoginPage: React.FC = () => {
             Login
           </button>
         </form>
+        {showAlert && (
+          <Alert sx={{ marginTop: '15px' }} severity="error">
+            Incorrect username or password, please try again
+          </Alert>
+        )}
       </div>
       <div className="SignInWithGoogle-container">
         <h2>

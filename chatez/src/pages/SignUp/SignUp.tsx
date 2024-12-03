@@ -22,7 +22,7 @@ const SignUp: React.FC = () => {
     );
   }, []);
 
-  const GotoSignUpPage = () => {
+  const GotoSignInPage = () => {
     history.push('/');
   };
 
@@ -109,7 +109,7 @@ const SignUp: React.FC = () => {
         <h2>
           Already have an account?{' '}
           <span>
-            <button id="Login-button" onClick={GotoSignUpPage}>
+            <button id="Login-button" onClick={GotoSignInPage}>
               <u>Sign In</u>
             </button>
           </span>

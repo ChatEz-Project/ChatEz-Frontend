@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 import ChatPage from './pages/Chats/chats';
 import { useAuth } from './contexts/authContext';
+import { ChatProvider } from './contexts/chatContext';
 
 function App() {
   const { userLoggedIn } = useAuth();
@@ -21,7 +22,17 @@ function App() {
         <Switch>
           <Route exact path="/" component={LoginPage} />
           <Route exact path="/SignUp" component={SignUp} />
-          {userLoggedIn && <Route exact path="/chats" component={ChatPage} />}
+          {userLoggedIn && (
+            <Route
+              exact
+              path="/chats"
+              component={() => (
+                <ChatProvider>
+                  <ChatPage />
+                </ChatProvider>
+              )}
+            />
+          )}
         </Switch>
       </Router>
     </div>

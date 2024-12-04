@@ -27,6 +27,10 @@ const ChatFeed: React.FC = () => {
     setIsLoadingMessages: setLoadMessages,
     friendActionStatus,
     setFriendActionStatus,
+    messageStatus,
+    setMessageStatus,
+    hasNewMessage,
+    setHasNewMessage,
   } = useChat();
 
   // Component state
@@ -108,6 +112,20 @@ const ChatFeed: React.FC = () => {
     setLoadMessages,
   ]);
 
+  useEffect(() => {
+    if (messageStatus === 'received' && hasNewMessage) {
+      fetchMessages();
+      setHasNewMessage(false);
+      setMessageStatus('none');
+    }
+  }, [
+    messageStatus,
+    hasNewMessage,
+    fetchMessages,
+    setHasNewMessage,
+    setMessageStatus,
+  ]);
+
   // Load messages when component mounts or current friend changes
   useEffect(() => {
     fetchMessages();
@@ -147,6 +165,7 @@ const ChatFeed: React.FC = () => {
     try {
       await sendMessage(currentUserAccessToken, currentFriend.email, message);
       setMessage('');
+      setMessageStatus('sent');
       fetchMessages();
       setLoadMessages(true);
     } catch (error) {

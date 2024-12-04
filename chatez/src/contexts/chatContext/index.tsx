@@ -2,6 +2,7 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 import { User } from '../../backend/types';
 
 type FriendAction = 'added' | 'removed' | '';
+type MessageStatus = 'sent' | 'received' | 'none';
 
 interface ChatContextType {
   selectedUser: User | undefined;
@@ -18,6 +19,10 @@ interface ChatContextType {
     action: FriendAction;
     username: string;
   }) => void;
+  messageStatus: MessageStatus;
+  setMessageStatus: (status: MessageStatus) => void;
+  hasNewMessage: boolean;
+  setHasNewMessage: (hasNew: boolean) => void;
 }
 
 interface ChatProviderProps {
@@ -42,6 +47,8 @@ export function ChatProvider({ children }: ChatProviderProps): JSX.Element {
     action: '' as FriendAction,
     username: '',
   });
+  const [messageStatus, setMessageStatus] = useState<MessageStatus>('none');
+  const [hasNewMessage, setHasNewMessage] = useState(false);
 
   const value: ChatContextType = {
     selectedUser,
@@ -50,6 +57,10 @@ export function ChatProvider({ children }: ChatProviderProps): JSX.Element {
     setIsLoadingMessages,
     friendActionStatus,
     setFriendActionStatus,
+    messageStatus,
+    setMessageStatus,
+    hasNewMessage,
+    setHasNewMessage,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

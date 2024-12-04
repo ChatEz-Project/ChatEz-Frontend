@@ -46,6 +46,7 @@ export const getFriends = async (authToken: string) => {
 
     // extract only necessary data
     const friends: User[] = response.data.map((friend: User) => ({
+      _id: friend._id,
       email: friend.email,
       displayName: friend.displayName,
       photoUrl: friend.photoUrl,
@@ -110,14 +111,15 @@ export const getUser = async (authToken: string, userEmail: string | null) => {
     );
 
     // extract only necessary data
-    const friends: User = {
+    const user: User = {
+      _id: response.data._id,
       email: response.data.email,
       displayName: response.data.displayName,
       photoUrl: response.data.photoUrl,
       lastActive: response.data.lastActive,
     };
 
-    return friends;
+    return user;
   } catch (error) {
     console.error('Error fetching user:', error);
     throw error;

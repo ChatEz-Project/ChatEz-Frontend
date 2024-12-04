@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 // getMessage()
 export interface Message {
   sender: string;
@@ -10,6 +12,7 @@ export interface Message {
 
 // getFriends()
 export interface User {
+  _id: string;
   email: string;
   displayName: string;
   photoUrl: string;

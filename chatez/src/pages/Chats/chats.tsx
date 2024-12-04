@@ -16,6 +16,7 @@ const ChatPage: React.FC = () => {
   const [userId, setUserId] = useState<string>();
   const [selectedFriendId, setSelectedFriendId] = useState<string>();
   const [socket, setSocket] = useState<SocketIOClient.Socket>();
+  const backendURL = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     const getIds = async () => {
@@ -53,16 +54,21 @@ const ChatPage: React.FC = () => {
     if (!userId || !selectedFriendId) return;
 
     console.log('Attempting socket connection...');
-    const socket = io('http://localhost:8080', {
-      transportOptions: {
-        polling: {
-          extraHeaders: {
-            user: userId,
-            friend: selectedFriendId,
+    const socket = io(
+      backendURL
+        ? backendURL
+        : 'https://chatez-backend-1040104677956.europe-west2.run.app',
+      {
+        transportOptions: {
+          polling: {
+            extraHeaders: {
+              user: userId,
+              friend: selectedFriendId,
+            },
           },
         },
-      },
-    });
+      }
+    );
 
     setSocket(socket);
 
@@ -110,6 +116,7 @@ const ChatPage: React.FC = () => {
     selectedUser?.email,
     setMessageStatus,
     setHasNewMessage,
+    backendURL,
   ]);
 
   useEffect(() => {

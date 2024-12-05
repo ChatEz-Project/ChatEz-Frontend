@@ -35,7 +35,7 @@ npm install
  
 #### Start in PROD mode:
 - ```bash
-      cd chatez; npm start:prod
+      cd chatez; npm run start:prod
   ```
 - will use backend on CloudRun
 

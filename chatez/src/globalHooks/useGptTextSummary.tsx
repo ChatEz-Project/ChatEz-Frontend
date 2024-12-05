@@ -4,6 +4,9 @@ import axios from 'axios';
 const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 const API_URL = 'https://api.openai.com/v1/chat/completions';
 
+const GPT_SYSTEM_DESCRIPTION = process.env.REACT_APP_GPT_SYSTEM_DESCRIPTION
+const GPT_PROMPT_PREFIX = process.env.REACT_APP_GPT_PROMPT_PREFIX
+
 const useGptTextSummary = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,11 +23,11 @@ const useGptTextSummary = () => {
           messages: [
             {
               role: 'system',
-              content: 'You are a helpful assistant that summarizes text.',
+              content: GPT_SYSTEM_DESCRIPTION,
             },
             {
               role: 'user',
-              content: `Please summarize the following text:\n\n${text}`,
+              content: `${GPT_PROMPT_PREFIX}\n\n${text}`,
             },
           ],
           max_tokens: 150,

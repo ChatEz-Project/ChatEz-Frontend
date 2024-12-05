@@ -1,20 +1,76 @@
 import Logo from '../../media/logo.svg';
 import { useHistory } from 'react-router-dom';
-import { doSignInWithGoogle } from '../../firebase/auth';
+import {
+  doSignInWithGoogle,
+  doCreateUserWithEmailAndPassword,
+} from '../../firebase/auth';
 import './SignUp.css';
 import { useEffect, useRef, useState } from 'react';
 import { CameraAlt, Google } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { Alert, IconButton } from '@mui/material';
+import { FirebaseError } from 'firebase/app';
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+
+  // displayPhoto stores the chosenDisplayPhoto
   const [displayPhoto, setDisplayPhoto] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [isSignedUp, setIsSignedUp] = useState(false);
+
+  const [emailAlreadyInUse, setEmailAlreadyInUse] = useState(false);
+  const [weakPassword, setWeakPassword] = useState(false);
 
   const history = useHistory();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Reset error states before trying to create a user
+    setEmailAlreadyInUse(false);
+    setWeakPassword(false);
+
+    try {
+      // Create new user
+      await doCreateUserWithEmailAndPassword(email, password);
+      setDisplayPhoto(displayPhoto);
+      setIsSignedUp(true);
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        if (error.code === 'auth/email-already-in-use') {
+          alreadyExists();
+        } else if (error.code === 'auth/weak-password') {
+          passwordIsWeak();
+        } else {
+          console.error('Sign up error:', error.message);
+        }
+      } else {
+        console.error('An unknown error occurred:', error);
+      }
+    } finally {
+      setIsSigningIn(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isSignedUp) {
+      history.push('/');
+    }
+  }, [isSignedUp]);
+
+  const alreadyExists = () => {
+    setEmailAlreadyInUse(true);
+    setTimeout(() => setEmailAlreadyInUse(false), 3000);
+  };
+
+  const passwordIsWeak = () => {
+    setWeakPassword(true);
+    setTimeout(() => setWeakPassword(false), 3000);
+  };
 
   useEffect(() => {
     setDisplayPhoto(
@@ -58,7 +114,7 @@ const SignUp: React.FC = () => {
         <div className="signUp-header">
           <img id="Logo" src={Logo} alt="Logo" />
         </div>
-        <form className="SignUp-form">
+        <form className="SignUp-form" onSubmit={handleSubmit}>
           <div className="photo-container">
             <img id="displayPhoto" src={displayPhoto} alt="Display url" />
             <span className="camera-icon">
@@ -104,6 +160,16 @@ const SignUp: React.FC = () => {
             Sign Up
           </button>
         </form>
+        {emailAlreadyInUse && (
+          <Alert sx={{ marginTop: '15px' }} severity="error">
+            Email already in use, Sign In or please try a different one.
+          </Alert>
+        )}
+        {!emailAlreadyInUse && weakPassword && (
+          <Alert sx={{ marginTop: '15px' }} severity="error">
+            Password is too weak (minimum 6 characters), please try again
+          </Alert>
+        )}
       </div>
       <div className="SignInWithGoogle-container">
         <h2>

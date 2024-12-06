@@ -16,6 +16,8 @@ import { renderMessagesByDate } from './ChatFeed.utils';
  * ChatFeed Component
  */
 const ChatFeed: React.FC = () => {
+  const FILE_TYPES_TO_RENDER=['image/png', 'image/jpeg', 'image/gif']
+
   // Authentication and user context
   const { currentUserAccessToken, userLoggedIn, currentUser } = useAuth();
   currentUserAccessToken ?? console.log(currentUserAccessToken);
@@ -45,6 +47,10 @@ const ChatFeed: React.FC = () => {
   const [isLeftPanelCollapsed, setIsLeftPanelCollapsed] = useState(true);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [attachedFile, setAttachedFile] = useState<File | undefined>(undefined);
+  const [showAttachmentPreview, setShowAttachmentPreview] = useState(false);
 
   // auto scroll to bottom
   const scrollToBottom = () => {
@@ -150,8 +156,28 @@ const ChatFeed: React.FC = () => {
     setIsRightPanelCollapsed(!isRightPanelCollapsed);
   const collapseLeftPanel = () =>
     setIsLeftPanelCollapsed(!isLeftPanelCollapsed);
-  const insertImage = () => console.log('Image has been inserted');
-  const attachFile = () => console.log('File has been attached');
+  const attachFile = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[e.target.files.length - 1];
+    if (file) {
+      setAttachedFile(file);
+      setShowAttachmentPreview(true);
+    }
+  };
+
+  const clearAttachment = () => {
+    if (attachedFile) {
+      URL.revokeObjectURL(URL.createObjectURL(attachedFile));
+    }
+    setAttachedFile(undefined);
+    setShowAttachmentPreview(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   /**
    * Handles message submission
@@ -163,8 +189,15 @@ const ChatFeed: React.FC = () => {
     }
 
     try {
-      await sendMessage(currentUserAccessToken, currentFriend.email, message);
+      await sendMessage(
+        currentUserAccessToken,
+        currentFriend.email,
+        message,
+        attachedFile
+      );
+
       setMessage('');
+      clearAttachment()
       setMessageStatus('sent');
       fetchMessages();
       setLoadMessages(true);
@@ -224,7 +257,7 @@ const ChatFeed: React.FC = () => {
             onClick={collapseLeftPanel}
             title="See friends"
           >
-            <MenuIcon id="Collapse-icon" />
+            <MenuIcon id="Collapse-icon"/>
           </IconButton>
 
           <h3>
@@ -265,9 +298,21 @@ const ChatFeed: React.FC = () => {
 
         {/* Message Input Area */}
         <div className="Bottom-panel">
-          <IconButton id="Image-button" onClick={insertImage}>
-            <Image id="Image-icon" />
-          </IconButton>
+          {attachedFile && showAttachmentPreview && (
+            <div className="attachment-preview">
+              {FILE_TYPES_TO_RENDER.includes(attachedFile.type) ? (
+                <img
+                  src={URL.createObjectURL(attachedFile)}
+                  alt="Attachment preview"
+                  className="preview-image"
+                />
+              ) : (
+                <span>{attachedFile.name}</span>
+              )}
+              <button onClick={clearAttachment}>✕</button>
+            </div>
+          )}
+          <input type="file" ref={fileInputRef} style={{display: 'none'}} onChange={handleFileChange}/>
           <IconButton id="AttachFile-button" onClick={attachFile}>
             <AttachFile id="AttachFile-icon" />
           </IconButton>

@@ -129,17 +129,25 @@ export const getUser = async (authToken: string, userEmail: string | null) => {
 export const sendMessage = async (
   authToken: string | null,
   recipientEmail: string,
-  message: string
+  message: string,
+  file?: File
 ) => {
   try {
+    const formData = new FormData();
+    formData.append('message', message);
+
+    if (file) {
+      formData.append('file', file);
+      console.log(`attached file: ${file.name}`)
+    }
+
     const response = await axios.post(
       `${BASE_URL}/sendMessage/${recipientEmail}`,
-      {
-        message: message,
-      },
+      formData,
       {
         headers: {
           Authorization: authToken,
+          'Content-Type': 'multipart/form-data',
         },
       }
     );

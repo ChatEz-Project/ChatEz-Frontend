@@ -5,7 +5,7 @@
   align-items: center;
   margin-bottom: 20px;
   position: relative;
-  z-index: 1001; /* Ensure it's above other panel elements */
+  z-index: 1001;
 }
 
 #SearchUser-input {
@@ -30,9 +30,9 @@
 }
 
 .popup-content {
-  position: fixed; /* Change to fixed */
-  left: 300px; /* Position it right after the ChatFeedFriendPanel */
-  top: 20px; /* Align with the Top-section */
+  position: fixed;
+  left: 300px;
+  top: 20px;
   background-color: #3a483f;
   padding: 20px;
   border-radius: 15px;
@@ -42,7 +42,7 @@
   visibility: hidden;
   transform: translateY(-5px);
   transition: all 0.2s ease;
-  z-index: 1002; /* Higher than Top-section */
+  z-index: 1002;
 }
 
 .popup-content.active {
@@ -110,4 +110,17 @@
   border-width: 10px;
   border-style: solid;
   border-color: transparent #3a483f transparent transparent;
+}
+
+@media screen and (max-width: 768px) {
+  .Top-section {
+    max-width: 320px;
+    width: 100%;
+  }
+
+  #SearchUser-input {
+    width: 100%;
+    margin-bottom: -10px;
+    margin-top: -10px;
+  }
 }

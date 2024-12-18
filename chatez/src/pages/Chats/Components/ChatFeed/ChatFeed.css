@@ -296,42 +296,70 @@
   margin: 0;
 }
 
-
 .attachment-preview {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 5px;
-    background-color: #f0f0f0;
-    margin: 0 10px;
-    border-radius: 4px;
-    max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 5px;
+  background-color: #f0f0f0;
+  margin: 0 10px;
+  border-radius: 4px;
+  max-width: 100%;
 }
 
 .preview-image {
-    max-width: 80px;
-    max-height: 50px;
-    object-fit: contain;
+  max-width: 80px;
+  max-height: 50px;
+  object-fit: contain;
 }
 
 .attachment-preview span {
-    margin-right: 10px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 100px;
+  margin-right: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100px;
 }
 
 .attachment-preview button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    padding-left: 10px;
-    color: #666; /* Optional: give some color to the close button */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding-left: 10px;
+  color: #666; /* Optional: give some color to the close button */
 }
 
-
 .attachment-preview button:hover {
-    color: #000; /* Optional: add hover effect */
+  color: #000; /* Optional: add hover effect */
+}
+
+@media screen and (max-width: 768px) {
+  .Top-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* z-index: 1000;  */
+    height: 60px;
+    box-sizing: border-box;
+  }
+
+  .Chat-feed {
+    margin-top: 60px;
+  }
+
+  .Messages-container {
+    height: calc(100vh - 160px);
+    padding-top: 60px;
+  }
+  .Top-panel h3 {
+    font-size: 18px;
+  }
+  .Top-panel p {
+    font-size: 14px;
+  }
+  #Profile-icon {
+    height: 30px;
+  }
 }

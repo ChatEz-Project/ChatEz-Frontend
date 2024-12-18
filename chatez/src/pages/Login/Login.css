@@ -98,3 +98,16 @@ h2 {
 .google-button:hover {
   background-color: #3367d6;
 }
+
+@media screen and (max-width: 768px) {
+  .LoginPage-form {
+    width: 300px;
+  }
+  .login-form input {
+    font-size: 14px;
+  }
+  .LoginPage #Divider {
+    width: 350px;
+    margin-bottom: 15px;
+  }
+}

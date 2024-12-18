@@ -137,6 +137,14 @@ h2 {
   background-color: #d15151;
   transform: translateY(-1px);
 }
+#CollapseProfilePanel-button {
+  color: white;
+  width: fit-content;
+  display: none;
+}
+#CollapseProfilePanel-icon {
+  font-size: 24px;
+}
 
 /* Scrollbar styling */
 .ChatFeedProfilePanel::-webkit-scrollbar {
@@ -160,6 +168,52 @@ h2 {
 /* Handle overflow content */
 .ChatFeedProfilePanel > * {
   max-width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .ChatFeedProfilePanel {
+    width: 100%;
+    height: 100%;
+  }
+  #Profile-picture {
+    height: 90px;
+    width: 90px;
+  }
+  .Document {
+    width: 300px;
+  }
+  #Display-name {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+
+  .Bottom-buttons {
+    padding-top: 15px;
+    gap: 8px;
+  }
+  #DeleteConversation-button,
+  #RemoveFriend-button {
+    width: 325px;
+    border-radius: 15px;
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+  #CollapseProfilePanel-button {
+    display: inline;
+    margin-top: -20px;
+    margin-right: 300px;
+  }
+  #CollapseProfilePanel-icon {
+    font-size: 25px;
+  }
+  .ChatFeedProfilePanel-Collapsed {
+    transform: translateX(580px);
+  }
 }
 
 /* Media query for smaller height screens */

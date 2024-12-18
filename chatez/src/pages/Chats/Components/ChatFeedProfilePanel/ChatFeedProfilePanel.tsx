@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { useChat } from '../../../../contexts/chatContext';
 import { useAuth } from '../../../../contexts/authContext';
 import { removeFriend } from '../../../../backend/endpoints';
-import { Alert } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Alert, IconButton } from '@mui/material';
 
 interface ChatFeedProfilePanelProps {
   className?: string;
@@ -16,6 +17,8 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
   const [sharedFiles, setSharedFiles] = useState<string[]>([]);
   const { selectedUser: currentFriend, setFriendActionStatus } = useChat();
   const { currentUserAccessToken } = useAuth();
+
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const deleteConversation = () => {
     console.log('Conversation has been deleted');
@@ -49,12 +52,33 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
     setSharedFiles(['DocumentExample1.docx', 'DocumentExample2.docx']);
   }, []);
 
+  // useEffect(() => {
+  //   setIsCollapsed((prevState) => !prevState);
+  // }, []);
+
+  // Toggle collapse state
+  const toggleCollapse = () => {
+    setIsCollapsed((prevState) => !prevState);
+  };
+
   return (
     <div
-      className={
+      className={`${
         className ? `ChatFeedProfilePanel ${className}` : 'ChatFeedProfilePanel'
-      }
+      } 
+      ${
+        isCollapsed ? 'ChatFeedProfilePanel-Collapsed' : 'ChatFeedProfilePanel'
+      }`}
     >
+      <div>
+        <IconButton
+          id="CollapseProfilePanel-button"
+          onClick={toggleCollapse} // Toggle collapse on click
+        >
+          <MenuIcon id="CollapseProfilePanel-icon" />
+        </IconButton>
+      </div>
+
       <img
         id="Profile-picture"
         src={currentFriend && currentFriend.photoUrl}

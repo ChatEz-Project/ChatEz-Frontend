@@ -16,7 +16,7 @@ import { renderMessagesByDate } from './ChatFeed.utils';
  * ChatFeed Component
  */
 const ChatFeed: React.FC = () => {
-  const FILE_TYPES_TO_RENDER=['image/png', 'image/jpeg', 'image/gif']
+  const FILE_TYPES_TO_RENDER = ['image/png', 'image/jpeg', 'image/gif'];
 
   // Authentication and user context
   const { currentUserAccessToken, userLoggedIn, currentUser } = useAuth();
@@ -197,7 +197,7 @@ const ChatFeed: React.FC = () => {
       );
 
       setMessage('');
-      clearAttachment()
+      clearAttachment();
       setMessageStatus('sent');
       fetchMessages();
       setLoadMessages(true);
@@ -250,14 +250,13 @@ const ChatFeed: React.FC = () => {
       />
 
       <div className="Chat-feed">
-        {/* Chat Header */}
         <div className="Top-panel">
           <IconButton
             id="CollapseLeftPanel-button"
             onClick={collapseLeftPanel}
             title="See friends"
           >
-            <MenuIcon id="Collapse-icon"/>
+            <MenuIcon id="Collapse-icon" />
           </IconButton>
 
           <h3>
@@ -312,7 +311,12 @@ const ChatFeed: React.FC = () => {
               <button onClick={clearAttachment}>✕</button>
             </div>
           )}
-          <input type="file" ref={fileInputRef} style={{display: 'none'}} onChange={handleFileChange}/>
+          <input
+            type="file"
+            ref={fileInputRef}
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
+          />
           <IconButton id="AttachFile-button" onClick={attachFile}>
             <AttachFile id="AttachFile-icon" />
           </IconButton>

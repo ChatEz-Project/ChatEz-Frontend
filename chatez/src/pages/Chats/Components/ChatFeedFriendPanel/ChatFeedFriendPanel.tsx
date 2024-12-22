@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 import { getFriendLatestMessage } from '../../../../backend/endpoints.utils';
 import { searchedFriends } from './ChatFeedFriendPanel.utils';
 import SearchAndAddFriend from './SearchAndAddFriend/SearchAndAddFriend';
+import MenuIcon from '@mui/icons-material/Menu';
 
 interface ChatFeedFriendPanelProps {
   className?: string;
@@ -74,6 +75,8 @@ const ChatFeedFriendPanel: React.FC<ChatFeedFriendPanelProps> = ({
   const [friendPhotos, setFriendPhotos] = useState<{ [email: string]: string }>(
     {}
   );
+
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const loadUserPhoto = useCallback(
     async (email: string | undefined) => {
@@ -227,11 +230,17 @@ const ChatFeedFriendPanel: React.FC<ChatFeedFriendPanelProps> = ({
     }
   };
 
+  // Toggle collapse state
+  const toggleCollapse = () => {
+    setIsCollapsed((prevState) => !prevState);
+  };
+
   return (
     <div
-      className={
+      className={`${
         className ? `ChatFeedFriendPanel ${className}` : 'ChatFeedFriendPanel'
-      }
+      } 
+      ${isCollapsed ? 'ChatFeedFriendPanel-Collapsed' : 'ChatFeedFriendPanel'}`}
     >
       <h3>
         <img
@@ -240,6 +249,10 @@ const ChatFeedFriendPanel: React.FC<ChatFeedFriendPanelProps> = ({
           alt="Display icon"
         />
         {userDisplayName}
+
+        <IconButton id="CollapsePanel-button" onClick={toggleCollapse}>
+          <MenuIcon id="CollapsePanel-icon" />
+        </IconButton>
       </h3>
       <hr />
 

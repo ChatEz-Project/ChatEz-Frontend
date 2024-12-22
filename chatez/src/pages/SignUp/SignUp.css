@@ -135,3 +135,33 @@ h2 {
 .google-button:hover {
   background-color: #3367d6;
 }
+
+@media screen and (max-width: 768px) {
+  .SignUpPage-form {
+    width: 300px;
+  }
+  .photo-container {
+    width: 90px;
+    height: 90px;
+  }
+  #camera-button {
+    font-size: 16px;
+    color: #43a656;
+  }
+  .SignUp-form input {
+    font-size: 14px;
+  }
+  .submit-button {
+    font-size: 14px;
+    padding: 5px;
+  }
+  .google-button {
+    background-color: #4285f4;
+    font-size: 14px;
+    width: 200px;
+    padding: 5px;
+  }
+  .SignInWithGoogle-container h2 {
+    font-size: 16px;
+  }
+}

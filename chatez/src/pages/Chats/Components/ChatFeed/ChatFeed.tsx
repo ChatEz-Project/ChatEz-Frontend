@@ -12,9 +12,6 @@ import ChatFeedFriendPanel from '../ChatFeedFriendPanel/ChatFeedFriendPanel';
 import ChatFeedProfilePanel from '../ChatFeedProfilePanel/ChatFeedProfilePanel';
 import { renderMessagesByDate } from './ChatFeed.utils';
 
-/**
- * ChatFeed Component
- */
 const ChatFeed: React.FC = () => {
   const FILE_TYPES_TO_RENDER = ['image/png', 'image/jpeg', 'image/gif'];
 

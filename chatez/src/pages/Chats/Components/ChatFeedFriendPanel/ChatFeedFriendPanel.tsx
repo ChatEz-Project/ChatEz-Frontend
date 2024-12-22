@@ -250,10 +250,7 @@ const ChatFeedFriendPanel: React.FC<ChatFeedFriendPanelProps> = ({
         />
         {userDisplayName}
 
-        <IconButton
-          id="CollapsePanel-button"
-          onClick={toggleCollapse} // Toggle collapse on click
-        >
+        <IconButton id="CollapsePanel-button" onClick={toggleCollapse}>
           <MenuIcon id="CollapsePanel-icon" />
         </IconButton>
       </h3>

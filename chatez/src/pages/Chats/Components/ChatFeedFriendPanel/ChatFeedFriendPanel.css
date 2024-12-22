@@ -180,7 +180,6 @@
   display: none;
 }
 
-/* Scrollbar styling */
 .messages-container::-webkit-scrollbar {
   width: 6px;
 }

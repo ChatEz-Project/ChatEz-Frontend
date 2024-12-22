@@ -52,11 +52,6 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
     setSharedFiles(['DocumentExample1.docx', 'DocumentExample2.docx']);
   }, []);
 
-  // useEffect(() => {
-  //   setIsCollapsed((prevState) => !prevState);
-  // }, []);
-
-  // Toggle collapse state
   const toggleCollapse = () => {
     setIsCollapsed((prevState) => !prevState);
   };
@@ -71,10 +66,7 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
       }`}
     >
       <div>
-        <IconButton
-          id="CollapseProfilePanel-button"
-          onClick={toggleCollapse} // Toggle collapse on click
-        >
+        <IconButton id="CollapseProfilePanel-button" onClick={toggleCollapse}>
           <MenuIcon id="CollapseProfilePanel-icon" />
         </IconButton>
       </div>

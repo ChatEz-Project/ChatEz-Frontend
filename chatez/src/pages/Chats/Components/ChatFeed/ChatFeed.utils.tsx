@@ -5,12 +5,14 @@ import MessageBox from './MessageBox';
 /**
  * Groups messages by date and formats them with date headers
  * @param messages Array of messages
- * @param currentUser Current friend for determining message direction
+ * @param language
+ * @param currentFriend Current friend for determining message direction
  * @returns JSX elements with grouped messages and date headers
  */
 export const renderMessagesByDate = (
   messages: Message[],
-  currentUser: User | undefined
+  language: string,
+  currentFriend: User | undefined
 ) => {
   // Group messages by date
   const messagesByDate: { [date: string]: Message[] } = {};
@@ -54,7 +56,8 @@ export const renderMessagesByDate = (
         <MessageBox
           key={index}
           message={message}
-          isRecipient={message.sender === currentUser?.email}
+          isRecipient={message.sender === currentFriend?.email}
+          language={language}
         />
       ))}
     </div>

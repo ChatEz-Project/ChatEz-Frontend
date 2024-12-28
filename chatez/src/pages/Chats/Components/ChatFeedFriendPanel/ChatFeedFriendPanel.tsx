@@ -40,14 +40,12 @@ const setPhotoInCache = (email: string, url: string) => {
   localStorage.setItem(`profile-${email}`, JSON.stringify(cacheData));
 };
 
-const cleanupCache = () => {
+export const cleanupCache = () => {
   const keys = Object.keys(localStorage);
+
   keys.forEach((key) => {
     if (key.startsWith('profile-')) {
-      const data = JSON.parse(localStorage.getItem(key) || '{}');
-      if (Date.now() - data.timestamp > CACHE_MAX_AGE) {
-        localStorage.removeItem(key);
-      }
+      localStorage.removeItem(key);
     }
   });
 };
@@ -307,7 +305,7 @@ const ChatFeedFriendPanel: React.FC<ChatFeedFriendPanelProps> = ({
           <button id="Logout-button" onClick={handleLogout}>
             Logout
           </button>
-          <IconButton onClick={() => console.log('Settings opened!')}>
+          <IconButton onClick={() => history.push('/settings')}>
             <Settings id="Settings-button" />
           </IconButton>
         </div>

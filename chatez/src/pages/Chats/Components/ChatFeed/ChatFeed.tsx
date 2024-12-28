@@ -4,7 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { AttachFile, Image, Send } from '@mui/icons-material';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Message, User } from '../../../../backend/types';
-import { sendMessage } from '../../../../backend/endpoints';
+import {getUser, sendMessage} from '../../../../backend/endpoints';
 import { getFriendMessages } from '../../../../backend/endpoints.utils';
 import { useAuth } from '../../../../contexts/authContext';
 import { useChat } from '../../../../contexts/chatContext/index';
@@ -48,6 +48,9 @@ const ChatFeed: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [attachedFile, setAttachedFile] = useState<File | undefined>(undefined);
   const [showAttachmentPreview, setShowAttachmentPreview] = useState(false);
+
+  const [backendUser, setBackendUser] = useState<User | null>(null);
+
 
   // auto scroll to bottom
   const scrollToBottom = () => {
@@ -107,13 +110,7 @@ const ChatFeed: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [
-    currentUserAccessToken,
-    currentUser,
-    currentFriend,
-    userLoggedIn,
-    setLoadMessages,
-  ]);
+  }, [currentUser, currentFriend, userLoggedIn, setLoadMessages]);
 
   useEffect(() => {
     if (messageStatus === 'received' && hasNewMessage) {
@@ -215,6 +212,23 @@ const ChatFeed: React.FC = () => {
   };
 
   useEffect(() => {
+    const loadUserData = async () => {
+      if (!currentUserAccessToken || !currentUser?.email) {
+        return;
+      }
+
+      try {
+        const user = await getUser(currentUserAccessToken, currentUser.email);
+        setBackendUser(user);
+      } catch (error) {
+        console.error('Failed to load user data:', error);
+      }
+    };
+
+    loadUserData();
+  }, [currentUserAccessToken, currentUser?.email]);
+
+  useEffect(() => {
     if (friendActionStatus.isVisible) {
       setAlertOpen(true);
     }
@@ -286,7 +300,7 @@ const ChatFeed: React.FC = () => {
             {isLoading ? (
               <div className="loading-message">Loading messages...</div>
             ) : (
-              allMessages && renderMessagesByDate(allMessages, currentFriend)
+              allMessages && renderMessagesByDate(allMessages, backendUser?.language || "", currentFriend)
             )}
             <div className="scroll-spacer" ref={messagesEndRef} />
           </div>

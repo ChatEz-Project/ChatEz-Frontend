@@ -327,11 +327,17 @@
   cursor: pointer;
   font-size: 16px;
   padding-left: 10px;
-  color: #666; /* Optional: give some color to the close button */
+  color: #666;
 }
 
 .attachment-preview button:hover {
-  color: #000; /* Optional: add hover effect */
+  color: #000;
+}
+.speechControls {
+  max-width: 180px;
+}
+.speechControls::-webkit-media-controls-timeline {
+  display: none;
 }
 
 @media screen and (max-width: 768px) {

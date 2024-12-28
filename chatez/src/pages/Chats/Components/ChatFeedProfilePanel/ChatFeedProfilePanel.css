@@ -13,6 +13,63 @@
   overflow-y: auto;
 }
 
+.ImageModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.ImageModalContent {
+  display: inline-block;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ImageModalContent img {
+  display: block;
+  max-width: 90vw;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  border-radius: 10px;
+}
+
+.ImageModalContent img:active {
+  transform: scale(0.98);
+}
+
+.ImageModalContent {
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: auto;
+}
+
+.ImageModal:hover {
+  cursor: pointer;
+}
+
+#DownloadFile-button {
+  color: white;
+  margin-left: 105px;
+}
+
+#DownloadImage-button {
+  color: #3a483f;
+}
+
+#DownloadIcon {
+  font-size: 45px;
+}
+
 .ChatFeedProfilePanel-Collapsed {
   transform: translateX(280px);
 }

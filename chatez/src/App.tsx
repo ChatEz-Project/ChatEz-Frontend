@@ -2,6 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginPage from './pages/Login/login';
 import SignUp from './pages/SignUp/SignUp';
+import Settings from './pages/Settings/Settings'
 import {
   BrowserRouter as Router,
   Switch,
@@ -16,12 +17,13 @@ function App() {
   const { userLoggedIn } = useAuth();
 
   return (
-    <div className="App">
+    <div className="App" style={{ color: "var(--background-color2)" }}>
       <Router>
         {!userLoggedIn ? <Redirect to="/" /> : null}
         <Switch>
           <Route exact path="/" component={LoginPage} />
           <Route exact path="/SignUp" component={SignUp} />
+          <Route exact path="/Settings" component={Settings} />
           {userLoggedIn && (
             <Route
               exact

@@ -1,4 +1,3 @@
-import { Types } from 'mongoose';
 
 // getMessage()
 export interface Message {
@@ -15,6 +14,7 @@ export interface User {
   _id: string;
   email: string;
   displayName: string;
+  language: string;
   photoUrl: string;
   lastActive: Date;
 }

@@ -8,9 +8,11 @@ import useGptTextSummary from '../../../../globalHooks/useGptTextSummary';
 const MessageBox = ({
   message,
   isRecipient,
+  language
 }: {
   message: Message;
   isRecipient: boolean;
+  language: string
 }) => {
   const [showTranslation, setShowTranslation] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
@@ -22,7 +24,8 @@ const MessageBox = ({
 
   const handleTranslate = async () => {
     if (!translatedText) {
-      await translate(message.message, 'es');
+      console.log(`Language: ${language}`)
+      await translate(message.message, language);
       if (translations) {
         setTranslatedText(translations);
       }

@@ -51,6 +51,7 @@ export const getFriends = async (authToken: string) => {
       displayName: friend.displayName,
       photoUrl: friend.photoUrl,
       lastActive: friend.lastActive,
+      language: friend.language
     }));
 
     return friends;
@@ -115,6 +116,7 @@ export const getUser = async (authToken: string, userEmail: string | null) => {
       _id: response.data._id,
       email: response.data.email,
       displayName: response.data.displayName,
+      language: response.data.language,
       photoUrl: response.data.photoUrl,
       lastActive: response.data.lastActive,
     };
@@ -182,6 +184,65 @@ export const getMessagesForSidebar = async (authToken: string | null) => {
     }));
 
     return messages;
+  } catch (error) {
+    console.error('Error sending message:', error);
+    throw error;
+  }
+};
+
+export const deleteAllUserConversations = async (authToken: string | null) => {
+  try {
+    return await axios.delete(
+      `${BASE_URL}/deleteAllUserConversations`,
+      {
+        headers: {
+          Authorization: authToken,
+        },
+      }
+    );
+  } catch (error) {
+    console.error('Error deleting conversations:', error);
+    throw error;
+  }
+}
+
+export const deleteUser = async (authToken: string | null) => {
+  try {
+    return await axios.delete(
+      `${BASE_URL}/deleteUser`,
+      {
+        headers: {
+          Authorization: authToken,
+        },
+      }
+    );
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    throw error;
+  }
+}
+
+export const setProfilePhoto = async (
+  authToken: string | null,
+  file: File
+) => {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    console.log(`attached file: ${file.name}`)
+
+    const response = await axios.post(
+      `${BASE_URL}/setProfilePhoto`,
+      formData,
+      {
+        headers: {
+          Authorization: authToken,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    return response.data;
   } catch (error) {
     console.error('Error sending message:', error);
     throw error;

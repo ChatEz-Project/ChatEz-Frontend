@@ -1,0 +1,27 @@
+.btn:hover {
+    background-color: rgba(143, 143, 143, 0.22);
+    opacity: 90%;
+}
+
+.input-header{
+    font-size: 24px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.submit-input{
+    background-color: rgb(67, 166, 86);
+    border-radius: 15px;
+    height: 40px;
+}
+
+.dangerous-button{
+    background-color: rgb(221, 102, 102);
+    .btn:hover {
+        background-color: rgba(187, 87, 87, 0.89);
+        opacity: 90%;
+    }
+    font-weight: 500;
+    border-radius: 15px;
+    height: 40px;
+}

@@ -14,6 +14,10 @@ interface AuthContextType {
   currentUserAccessToken: string | null;
   userLoggedIn: boolean;
   loading: boolean;
+  displayProfilePhoto: File | undefined;
+  username: string | undefined;
+  setUsername: (username: string) => void;
+  setDisplayProfilePhoto: (displayPhoto: File) => void;
 }
 
 // Props type for AuthProvider component
@@ -41,6 +45,10 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
   >(null);
   const [loading, setLoading] = useState(true);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [displayProfilePhoto, setDisplayProfilePhoto] = useState<
+    File | undefined
+  >();
+  const [username, setUsername] = useState<string | undefined>();
 
   // Effect to subscribe to Firebase auth state changes
   useEffect(() => {
@@ -68,6 +76,10 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
     currentUserAccessToken,
     userLoggedIn,
     loading,
+    displayProfilePhoto,
+    setDisplayProfilePhoto,
+    username,
+    setUsername,
   };
 
   return (

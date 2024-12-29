@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import ChatFeed from './Components/ChatFeed/ChatFeed';
 import { useAuth } from '../../contexts/authContext';
 import { useChat } from '../../contexts/chatContext';
-import { getUser } from '../../backend/endpoints';
+import {
+  getUser,
+  setDisplayName,
+  setProfilePhoto,
+} from '../../backend/endpoints';
 import io from 'socket.io-client';
 
 interface UserStatusEvent {
@@ -10,7 +14,8 @@ interface UserStatusEvent {
 }
 
 const ChatPage: React.FC = () => {
-  const { currentUser, currentUserAccessToken } = useAuth();
+  const { currentUser, currentUserAccessToken, displayProfilePhoto, username } =
+    useAuth();
   const { selectedUser, setMessageStatus, setHasNewMessage, messageStatus } =
     useChat();
   const [userId, setUserId] = useState<string>();
@@ -18,6 +23,20 @@ const ChatPage: React.FC = () => {
   const [socket, setSocket] = useState<SocketIOClient.Socket>();
   const backendURL = process.env.REACT_APP_BACKEND_URL;
 
+  useEffect(() => {
+    const updatePhotoAndName = async () => {
+      if (
+        currentUser &&
+        currentUserAccessToken &&
+        displayProfilePhoto &&
+        username
+      ) {
+        await setDisplayName(currentUserAccessToken, username);
+        await setProfilePhoto(currentUserAccessToken, displayProfilePhoto);
+      }
+    };
+    updatePhotoAndName();
+  }, [currentUser, currentUserAccessToken, displayProfilePhoto, username]);
   useEffect(() => {
     const getIds = async () => {
       try {
@@ -53,7 +72,7 @@ const ChatPage: React.FC = () => {
   useEffect(() => {
     if (!userId || !selectedFriendId) return;
 
-    console.log('Attempting socket connection...');
+    //console.log('Attempting socket connection...');
     const socket = io(
       backendURL
         ? backendURL
@@ -74,37 +93,37 @@ const ChatPage: React.FC = () => {
 
     // Connection events
     socket.on('connect', () => {
-      console.log('Connected to socket server');
-      console.log('Current user email:', currentUser?.email);
-      console.log('Friend email:', selectedUser?.email);
+      //console.log('Connected to socket server');
+      //console.log('Current user email:', currentUser?.email);
+      //console.log('Friend email:', selectedUser?.email);
     });
 
     socket.on('connect_error', (error: { message: any }) => {
-      console.log('Socket connection error:', error.message);
+      //console.log('Socket connection error:', error.message);
     });
 
     // Chat room events
     socket.on('user_online', ({ userId: onlineUserId }: UserStatusEvent) => {
       const userEmail =
         onlineUserId === userId ? currentUser?.email : selectedUser?.email;
-      console.log(`${userEmail} is online`);
+      //console.log(`${userEmail} is online`);
     });
 
     socket.on('user_offline', ({ userId: offlineUserId }: UserStatusEvent) => {
       const userEmail =
         offlineUserId === userId ? currentUser?.email : selectedUser?.email;
-      console.log(`${userEmail} is offline`);
+      //console.log(`${userEmail} is offline`);
     });
 
     socket.on('message_received', () => {
-      console.log('New message in chat');
+      //console.log('New message in chat');
       setMessageStatus('received');
       setHasNewMessage(true);
     });
 
     // Cleanup on unmount or when users change
     return () => {
-      console.log('Disconnecting socket...');
+      //console.log('Disconnecting socket...');
       socket.disconnect();
       setMessageStatus('none');
       setHasNewMessage(false);

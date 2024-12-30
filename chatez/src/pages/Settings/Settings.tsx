@@ -147,7 +147,7 @@ const Settings: React.FC = () => {
       </div>
       <div className="row">
         <div className="col-md"></div>
-        <div className="col-md w-25" style={{ borderRight: '6px solid white' }}>
+        <div className="col-sm-4" style={{ borderRight: '6px solid white' }}>
           <div style={{ position: 'relative', display: 'inline-block' }}>
             <img
               className="row"
@@ -187,7 +187,7 @@ const Settings: React.FC = () => {
             {currentUser?.email}
           </h1>
         </div>
-        <div className="col-md w-25 flex-column d-flex align-items-start">
+        <div className="col-sm-4 flex-column d-flex align-items-start">
           <h1>Settings</h1>
           <div className="mt-5">
             <h1 className="input-header">Change Name:</h1>
@@ -266,7 +266,7 @@ const Settings: React.FC = () => {
           </div>
           <div className="mt-4">
             <button
-              className="btn dangerous-button m-1 p-0 fs-3"
+              className="btn dangerous-button mx-2 py-0 px-2 fs-3"
               onClick={async () => {
                 try {
                   await deleteAllUserConversations(currentUserAccessToken);
@@ -274,15 +274,14 @@ const Settings: React.FC = () => {
                   console.error('Error deleting conversations:', error);
                 }
               }}
-              style={{ width: '300px' }}
               id="Delete-all-messages"
             >
               Delete All Messages
             </button>
           </div>
-          <div className="mt-4">
+          <div className="mt-3">
             <button
-              className="btn dangerous-button m-1 p-0 fs-3"
+              className="btn dangerous-button py-0 px-3 fs-3"
               onClick={async () => {
                 try {
                   cleanupCache();
@@ -293,7 +292,7 @@ const Settings: React.FC = () => {
                   console.error('Error deleting user:', error);
                 }
               }}
-              style={{ width: '300px' }}
+              style={{marginLeft: "35px"}}
               id="Delete-account"
             >
               Delete Account

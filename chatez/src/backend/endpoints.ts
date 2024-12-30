@@ -32,6 +32,38 @@ export const getMessages = async (authToken: string) => {
   }
 };
 
+export const getMessagesForFriend = async (
+  authToken: string,
+  friendEmail: string
+) => {
+  try {
+    const response = await axios.patch(
+      `${BASE_URL}/getMessagesForFriend/${friendEmail}`,
+      {},
+      {
+        headers: {
+          Authorization: authToken,
+        },
+      }
+    );
+
+    // extract only necessary data
+    const messages: Message[] = response.data.map((message: Message) => ({
+      sender: message.sender,
+      recipient: message.recipient,
+      read: message.read,
+      fileUrl: message.fileUrl,
+      message: message.message,
+      dateSent: message.dateSent,
+    }));
+
+    return messages;
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    throw error;
+  }
+};
+
 export const getFriends = async (authToken: string) => {
   try {
     const response = await axios.patch(

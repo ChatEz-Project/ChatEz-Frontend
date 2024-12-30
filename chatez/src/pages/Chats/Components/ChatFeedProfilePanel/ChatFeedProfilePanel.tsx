@@ -96,10 +96,6 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
     setExpandedImage(null);
   };
 
-  useEffect(() => {
-    console.log('Shared Images:', sharedImages);
-  }, [sharedImages]);
-
   const downloadFile = (fileUrl: string) => {
     const fileName = fileUrl.split('/').pop() || 'file';
     const link = document.createElement('a');

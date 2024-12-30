@@ -4,7 +4,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { AttachFile, Image, Send } from '@mui/icons-material';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Message, User } from '../../../../backend/types';
-import { getUser, sendMessage } from '../../../../backend/endpoints';
+import {
+  getMessagesForFriend,
+  getUser,
+  sendMessage,
+} from '../../../../backend/endpoints';
 import { getFriendMessages } from '../../../../backend/endpoints.utils';
 import { useAuth } from '../../../../contexts/authContext';
 import { useChat } from '../../../../contexts/chatContext/index';
@@ -96,10 +100,9 @@ const ChatFeed: React.FC = () => {
     setError(null);
 
     try {
-      const messages = await getFriendMessages(
+      const messages = await getMessagesForFriend(
         currentUserAccessToken,
-        currentFriend.email,
-        currentUser.email
+        currentFriend.email
       );
       setAllMessages(messages);
       setLoadMessages(false);

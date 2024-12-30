@@ -281,3 +281,23 @@ export const setLanguage = async (
     throw error;
   }
 };
+
+export const deleteFriendMessages = async (
+  authToken: string | null,
+  friendEmail: string
+) => {
+  try {
+    return await axios.post(
+      `${BASE_URL}/deleteConversation/${friendEmail}`,
+      {},
+      {
+        headers: {
+          Authorization: authToken,
+        },
+      }
+    );
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    throw error;
+  }
+};

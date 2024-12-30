@@ -51,7 +51,7 @@ export const getFriends = async (authToken: string) => {
       displayName: friend.displayName,
       photoUrl: friend.photoUrl,
       lastActive: friend.lastActive,
-      language: friend.language
+      language: friend.language,
     }));
 
     return friends;
@@ -140,7 +140,7 @@ export const sendMessage = async (
 
     if (file) {
       formData.append('file', file);
-      console.log(`attached file: ${file.name}`)
+      console.log(`attached file: ${file.name}`);
     }
 
     const response = await axios.post(
@@ -192,48 +192,58 @@ export const getMessagesForSidebar = async (authToken: string | null) => {
 
 export const deleteAllUserConversations = async (authToken: string | null) => {
   try {
-    return await axios.delete(
-      `${BASE_URL}/deleteAllUserConversations`,
-      {
-        headers: {
-          Authorization: authToken,
-        },
-      }
-    );
+    return await axios.delete(`${BASE_URL}/deleteAllUserConversations`, {
+      headers: {
+        Authorization: authToken,
+      },
+    });
   } catch (error) {
     console.error('Error deleting conversations:', error);
     throw error;
   }
-}
+};
 
 export const deleteUser = async (authToken: string | null) => {
   try {
-    return await axios.delete(
-      `${BASE_URL}/deleteUser`,
-      {
-        headers: {
-          Authorization: authToken,
-        },
-      }
-    );
+    return await axios.delete(`${BASE_URL}/deleteUser`, {
+      headers: {
+        Authorization: authToken,
+      },
+    });
   } catch (error) {
     console.error('Error deleting user:', error);
     throw error;
   }
-}
+};
 
-export const setProfilePhoto = async (
-  authToken: string | null,
-  file: File
-) => {
+export const setProfilePhoto = async (authToken: string | null, file: File) => {
   try {
     const formData = new FormData();
     formData.append('file', file);
-    console.log(`attached file: ${file.name}`)
+    console.log(`attached file: ${file.name}`);
 
+    const response = await axios.post(`${BASE_URL}/setProfilePhoto`, formData, {
+      headers: {
+        Authorization: authToken,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error setting profile photo:', error);
+    throw error;
+  }
+};
+
+export const setDisplayName = async (
+  authToken: string | null,
+  displayName: string
+) => {
+  try {
     const response = await axios.post(
-      `${BASE_URL}/setProfilePhoto`,
-      formData,
+      `${BASE_URL}/setDisplayName`,
+      { displayName },
       {
         headers: {
           Authorization: authToken,
@@ -244,7 +254,30 @@ export const setProfilePhoto = async (
 
     return response.data;
   } catch (error) {
-    console.error('Error sending message:', error);
+    console.error('Error setting display name:', error);
+    throw error;
+  }
+};
+
+export const setLanguage = async (
+  authToken: string | null,
+  language: string
+) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/setLanguage`,
+      { language },
+      {
+        headers: {
+          Authorization: authToken,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error setting language:', error);
     throw error;
   }
 };

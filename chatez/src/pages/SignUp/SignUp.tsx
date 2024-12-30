@@ -9,14 +9,18 @@ import { useEffect, useRef, useState } from 'react';
 import { CameraAlt, Google } from '@mui/icons-material';
 import { Alert, IconButton } from '@mui/material';
 import { FirebaseError } from 'firebase/app';
+import { useAuth } from '../../contexts/authContext';
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState<string>('');
+  const [userDisplayName, setUserDisplayName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
+  const { setDisplayProfilePhoto, setUsername } = useAuth();
+
   // displayPhoto stores the chosenDisplayPhoto
-  const [displayPhoto, setDisplayPhoto] = useState<string>('');
+  const [displayPhoto, setDisplayPhoto] = useState<File>();
+  const [photo, setPhoto] = useState<string>();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const [isSigningIn, setIsSigningIn] = useState(false);
@@ -24,11 +28,23 @@ const SignUp: React.FC = () => {
 
   const [emailAlreadyInUse, setEmailAlreadyInUse] = useState(false);
   const [weakPassword, setWeakPassword] = useState(false);
+  const [wrongFileType, setWrongFileType] = useState(false);
 
   const history = useHistory();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Validate the displayPhoto
+    if (displayPhoto) {
+      const allowedExtensions = ['jpg', 'png', 'gif'];
+      const fileExtension = displayPhoto.name.split('.').pop()?.toLowerCase();
+
+      if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+        setWrongFileType(true);
+        return;
+      }
+    }
 
     // Reset error states before trying to create a user
     setEmailAlreadyInUse(false);
@@ -38,6 +54,10 @@ const SignUp: React.FC = () => {
       // Create new user
       await doCreateUserWithEmailAndPassword(email, password);
       setDisplayPhoto(displayPhoto);
+      setUsername(userDisplayName);
+      if (displayPhoto) {
+        setDisplayProfilePhoto(displayPhoto);
+      }
       setIsSignedUp(true);
     } catch (error: unknown) {
       if (error instanceof FirebaseError) {
@@ -62,6 +82,12 @@ const SignUp: React.FC = () => {
     }
   }, [isSignedUp]);
 
+  useEffect(() => {
+    setPhoto(
+      'https://i.pinimg.com/736x/3d/cd/4a/3dcd4af5bc9e06d36305984730ab7888.jpg'
+    );
+  }, []);
+
   const alreadyExists = () => {
     setEmailAlreadyInUse(true);
     setTimeout(() => setEmailAlreadyInUse(false), 3000);
@@ -71,12 +97,6 @@ const SignUp: React.FC = () => {
     setWeakPassword(true);
     setTimeout(() => setWeakPassword(false), 3000);
   };
-
-  useEffect(() => {
-    setDisplayPhoto(
-      'https://i.pinimg.com/736x/3d/cd/4a/3dcd4af5bc9e06d36305984730ab7888.jpg'
-    );
-  }, []);
 
   const GotoSignInPage = () => {
     history.push('/');
@@ -104,7 +124,8 @@ const SignUp: React.FC = () => {
     const file = event.target.files?.[0]; // Get the selected file
     if (file) {
       const fileURL = URL.createObjectURL(file); // Create a preview URL
-      setDisplayPhoto(fileURL); // Update the display photo
+      setDisplayPhoto(file); // Update the display photo
+      setPhoto(fileURL);
     }
   };
 
@@ -116,7 +137,7 @@ const SignUp: React.FC = () => {
         </div>
         <form className="SignUp-form" onSubmit={handleSubmit}>
           <div className="photo-container">
-            <img id="displayPhoto" src={displayPhoto} alt="Display url" />
+            <img id="displayPhoto" src={photo} alt="Display url" />
             <span className="camera-icon">
               <IconButton onClick={updateDisplayPhoto}>
                 <CameraAlt id="camera-button" />
@@ -135,8 +156,8 @@ const SignUp: React.FC = () => {
             name="username"
             placeholder="Username"
             required
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={userDisplayName}
+            onChange={(e) => setUserDisplayName(e.target.value)}
           />
           <input
             type="email"
@@ -168,6 +189,12 @@ const SignUp: React.FC = () => {
         {!emailAlreadyInUse && weakPassword && (
           <Alert sx={{ marginTop: '15px' }} severity="error">
             Password is too weak (minimum 6 characters), please try again
+          </Alert>
+        )}
+        {!emailAlreadyInUse && !weakPassword && wrongFileType && (
+          <Alert sx={{ marginTop: '15px' }} severity="error">
+            Invalid profile image file type. Please upload a .jpg, .png, or .gif
+            file.
           </Alert>
         )}
       </div>

@@ -10,11 +10,11 @@ import TextToSpeechAPI from '../../../../globalHooks/useTextToSpeech';
 const MessageBox = ({
   message,
   isRecipient,
-  language
+  language,
 }: {
   message: Message;
   isRecipient: boolean;
-  language: string
+  language: string;
 }) => {
   const [showTranslation, setShowTranslation] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
@@ -29,7 +29,7 @@ const MessageBox = ({
 
   const handleTranslate = async () => {
     if (!translatedText) {
-      console.log(`Language: ${language}`)
+      console.log(`Language: ${language}`);
       await translate(message.message, language);
       if (translations) {
         setTranslatedText(translations);
@@ -145,7 +145,6 @@ const MessageBox = ({
             minute: '2-digit',
             hour12: false,
           })}
-          {isRecipient && (message.read ? ' 🙉' : ' 🙈')}
         </p>
       </div>
     </div>

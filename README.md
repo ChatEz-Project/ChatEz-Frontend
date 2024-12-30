@@ -20,7 +20,6 @@ ChatEz is a scalable, real-time web chat application with enhanced features, inc
 
 ## Setup
 
-
 ### Install Dependencies:
 ```bash
 cd chatez

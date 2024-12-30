@@ -266,7 +266,7 @@ const Settings: React.FC = () => {
           </div>
           <div className="mt-4">
             <button
-              className="btn dangerous-button m-1 p-0 fs-3"
+              className="btn dangerous-button mx-2 py-0 px-2 fs-3"
               onClick={async () => {
                 try {
                   await deleteAllUserConversations(currentUserAccessToken);
@@ -274,15 +274,14 @@ const Settings: React.FC = () => {
                   console.error('Error deleting conversations:', error);
                 }
               }}
-              style={{ width: '300px' }}
               id="Delete-all-messages"
             >
               Delete All Messages
             </button>
           </div>
-          <div className="mt-4">
+          <div className="mt-3">
             <button
-              className="btn dangerous-button m-1 p-0 fs-3"
+              className="btn dangerous-button py-0 px-3 fs-3"
               onClick={async () => {
                 try {
                   cleanupCache();
@@ -293,7 +292,7 @@ const Settings: React.FC = () => {
                   console.error('Error deleting user:', error);
                 }
               }}
-              style={{ width: '300px' }}
+              style={{marginLeft: "35px"}}
               id="Delete-account"
             >
               Delete Account

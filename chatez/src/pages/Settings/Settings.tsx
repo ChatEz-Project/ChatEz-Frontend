@@ -147,7 +147,7 @@ const Settings: React.FC = () => {
       </div>
       <div className="row">
         <div className="col-md"></div>
-        <div className="col-md w-25" style={{ borderRight: '6px solid white' }}>
+        <div className="col-sm-4" style={{ borderRight: '6px solid white' }}>
           <div style={{ position: 'relative', display: 'inline-block' }}>
             <img
               className="row"
@@ -187,7 +187,7 @@ const Settings: React.FC = () => {
             {currentUser?.email}
           </h1>
         </div>
-        <div className="col-md w-25 flex-column d-flex align-items-start">
+        <div className="col-sm-4 flex-column d-flex align-items-start">
           <h1>Settings</h1>
           <div className="mt-5">
             <h1 className="input-header">Change Name:</h1>

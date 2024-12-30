@@ -4,7 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { AttachFile, Image, Send } from '@mui/icons-material';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Message, User } from '../../../../backend/types';
-import {getUser, sendMessage} from '../../../../backend/endpoints';
+import { getUser, sendMessage } from '../../../../backend/endpoints';
 import { getFriendMessages } from '../../../../backend/endpoints.utils';
 import { useAuth } from '../../../../contexts/authContext';
 import { useChat } from '../../../../contexts/chatContext/index';
@@ -50,7 +50,6 @@ const ChatFeed: React.FC = () => {
   const [showAttachmentPreview, setShowAttachmentPreview] = useState(false);
 
   const [backendUser, setBackendUser] = useState<User | null>(null);
-
 
   // auto scroll to bottom
   const scrollToBottom = () => {
@@ -300,7 +299,12 @@ const ChatFeed: React.FC = () => {
             {isLoading ? (
               <div className="loading-message">Loading messages...</div>
             ) : (
-              allMessages && renderMessagesByDate(allMessages, backendUser?.language || "", currentFriend)
+              allMessages &&
+              renderMessagesByDate(
+                allMessages,
+                backendUser?.language || '',
+                currentFriend
+              )
             )}
             <div className="scroll-spacer" ref={messagesEndRef} />
           </div>
@@ -367,6 +371,7 @@ const ChatFeed: React.FC = () => {
             ? 'ChatFeedProfilePanel'
             : 'ChatFeedProfilePanel-Collapsed'
         }
+        allMessages={allMessages} // Pass allMessages here
       />
     </div>
   );

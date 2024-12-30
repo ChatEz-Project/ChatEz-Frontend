@@ -2,7 +2,10 @@ import './ChatFeedProfilePanel.css';
 import { useEffect, useState } from 'react';
 import { useChat } from '../../../../contexts/chatContext';
 import { useAuth } from '../../../../contexts/authContext';
-import { removeFriend } from '../../../../backend/endpoints';
+import {
+  deleteFriendMessages,
+  removeFriend,
+} from '../../../../backend/endpoints';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Alert, IconButton } from '@mui/material';
 import { FileDownloadSharp } from '@mui/icons-material';
@@ -28,8 +31,15 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
 
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
 
-  const deleteConversation = () => {
-    console.log('Conversation has been deleted');
+  const deleteConversation = async () => {
+    try {
+      if (currentUserAccessToken && currentFriend) {
+        await deleteFriendMessages(currentUserAccessToken, currentFriend.email);
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error('Error delete convo: ', err);
+    }
   };
 
   const removeFriendHandler = async () => {
@@ -41,6 +51,7 @@ const ChatFeedProfilePanel: React.FC<ChatFeedProfilePanelProps> = ({
           action: 'removed',
           username: currentFriend.displayName,
         });
+        window.location.reload();
       } catch (error) {
         // Handle failure case
         setFriendActionStatus({

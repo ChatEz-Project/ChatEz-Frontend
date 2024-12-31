@@ -1,26 +1,63 @@
 .btn:hover {
-    background-color: rgba(143, 143, 143, 0.22);
+  background-color: rgba(143, 143, 143, 0.22);
+  opacity: 90%;
+}
+
+.input-header {
+  font-size: 24px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.submit-input {
+  background-color: rgb(67, 166, 86);
+  border-radius: 15px;
+  height: 40px;
+}
+
+.dangerous-button {
+  background-color: rgb(221, 102, 102);
+  .btn:hover {
+    background-color: rgba(187, 87, 87, 0.89);
     opacity: 90%;
+  }
+  font-weight: 500;
+  border-radius: 15px;
 }
 
-.input-header{
-    font-size: 24px;
+.custom-border {
+  border-right: 6px solid white;
+}
+
+@media screen and (max-width: 768px) {
+  #logo {
+    margin-bottom: 0px;
+    margin-top: -40px;
+  }
+  .row {
+    margin: 0 auto;
+    padding: 10px;
+  }
+
+  .d-flex {
     display: flex;
-    align-items: flex-start;
-}
+  }
 
-.submit-input{
-    background-color: rgb(67, 166, 86);
-    border-radius: 15px;
-    height: 40px;
-}
+  .justify-content-md-center {
+    justify-content: center;
+  }
 
-.dangerous-button{
-    background-color: rgb(221, 102, 102);
-    .btn:hover {
-        background-color: rgba(187, 87, 87, 0.89);
-        opacity: 90%;
-    }
-    font-weight: 500;
-    border-radius: 15px;
+  .custom-border {
+    border-right: none;
+    border-bottom: 3px solid white;
+    margin-bottom: 15px;
+  }
+
+  .Settings {
+    min-height: 1200px;
+  }
+
+  #title {
+    margin-bottom: -30px;
+  }
 }

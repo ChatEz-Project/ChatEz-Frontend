@@ -141,13 +141,13 @@ const Settings: React.FC = () => {
           </button>
         </div>
         <div className="col justify-items-center pt-4">
-          <img src={Logo} alt="Logo" style={{ width: '200px' }} />
+          <img id="logo" src={Logo} alt="Logo" style={{ width: '200px' }} />
         </div>
         <div className="col-sm-1"></div>
       </div>
       <div className="row">
         <div className="col-md"></div>
-        <div className="col-sm-4" style={{ borderRight: '6px solid white' }}>
+        <div className="col-sm-4 custom-border">
           <div style={{ position: 'relative', display: 'inline-block' }}>
             <img
               className="row"
@@ -188,7 +188,7 @@ const Settings: React.FC = () => {
           </h1>
         </div>
         <div className="col-sm-4 flex-column d-flex align-items-start">
-          <h1>Settings</h1>
+          <h1 id="title">Settings</h1>
           <div className="mt-5">
             <h1 className="input-header">Change Name:</h1>
             <div className="d-flex align-items-center">
@@ -292,7 +292,7 @@ const Settings: React.FC = () => {
                   console.error('Error deleting user:', error);
                 }
               }}
-              style={{marginLeft: "35px"}}
+              style={{ marginLeft: '35px' }}
               id="Delete-account"
             >
               Delete Account

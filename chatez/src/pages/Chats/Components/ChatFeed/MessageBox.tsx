@@ -1,7 +1,7 @@
 import { GTranslate, Summarize } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Message } from '../../../../backend/types';
 import { useGoogleTranslate } from '../../../../globalHooks/useGoogleTranslations';
 import useGptTextSummary from '../../../../globalHooks/useGptTextSummary';
@@ -22,10 +22,24 @@ const MessageBox = ({
   const [translatedText, setTranslatedText] = useState('');
   const [summaryText, setSummaryText] = useState('');
   const [audioSrc, setAudioSrc] = useState<string | null>(null);
+  const [image, setImage] = useState<any>();
+  const [file, setFile] = useState<any>();
 
   const { translate, translations } = useGoogleTranslate();
   const { gptTextSummary, loading: summarizing } = useGptTextSummary();
   const { handleSynthesize } = TextToSpeechAPI();
+
+  useEffect(() => {
+    if (message.fileUrl) {
+      const image = /\.(jpeg|jpg|gif|png)$/i.test(message.fileUrl)
+        ? message.fileUrl
+        : null;
+      const file = !image ? message.fileUrl : null;
+
+      setImage(image);
+      setFile(file);
+    }
+  }, [message.fileUrl]);
 
   const handleTranslate = async () => {
     if (!translatedText) {
@@ -77,6 +91,26 @@ const MessageBox = ({
       <div
         className={isRecipient ? 'Message-box-recipient' : 'Message-box-you'}
       >
+        {image && (
+          <img src={image} alt="sharedImage" width={200} height={200} />
+        )}
+        {file && (
+          <div className="file-container">
+            <span className="file-name">
+              {decodeURIComponent(
+                file.split('/').pop()?.split('-').pop() || 'File'
+              )}
+            </span>
+            <a
+              href={file}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="file-link"
+            >
+              Open File
+            </a>
+          </div>
+        )}
         <p id="Message">{message.message}</p>
       </div>
 

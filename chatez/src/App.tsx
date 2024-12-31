@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LoginPage from './pages/Login/login';
 import SignUp from './pages/SignUp/SignUp';
-import Settings from './pages/Settings/Settings'
+import Settings from './pages/Settings/Settings';
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,7 +17,7 @@ function App() {
   const { userLoggedIn } = useAuth();
 
   return (
-    <div className="App" style={{ color: "var(--background-color2)" }}>
+    <div className="App" style={{ color: 'black' }}>
       <Router>
         {!userLoggedIn ? <Redirect to="/" /> : null}
         <Switch>

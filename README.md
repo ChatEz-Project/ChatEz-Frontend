@@ -27,20 +27,18 @@ npm install
 ```
 
 ### Run the App:
-
 #### Start in DEV mode:
-
-- package.json
-- scripts
-- start:dev
-- will use backend on localhost
-
+- ```bash
+      cd chatez; npm run start:dev
+  ```
+ - will use backend on localhost
+ 
 #### Start in PROD mode:
-
-- package.json
-- scripts
-- start:prod
+- ```bash
+      cd chatez; npm run start:prod
+  ```
 - will use backend on CloudRun
+
 
 After deployment, access the application via the provided URL.
 

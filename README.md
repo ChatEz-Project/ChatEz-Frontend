@@ -49,3 +49,6 @@ After deployment, access the application via the provided URL.
 * **Multi-Language Support**: Built-in translation for messages.
 * **Accessibility**: Text-to-speech and AI-generated summaries for easy conversation overview.
 * **Env Based Config**: Will override .env file with env.prod or env.dev based on start mode.
+
+
+https://youtu.be/3TdlD8Ei-GY?si=Sfw4Yi1kbXAbPDj6

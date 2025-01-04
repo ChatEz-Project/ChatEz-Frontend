@@ -50,5 +50,5 @@ After deployment, access the application via the provided URL.
 * **Accessibility**: Text-to-speech and AI-generated summaries for easy conversation overview.
 * **Env Based Config**: Will override .env file with env.prod or env.dev based on start mode.
 
-[![ChatEz](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=3TdlD8Ei-GY)
+[![Watch the Demo](https://raw.githubusercontent.com/X2Abdul/ChatEz-Frontend/main/Demo_Thumbnail.png)](https://raw.githubusercontent.com/X2Abdul/ChatEz-Frontend/main/ChatEz_Demo.mov)
 

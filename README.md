@@ -50,5 +50,13 @@ After deployment, access the application via the provided URL.
 * **Accessibility**: Text-to-speech and AI-generated summaries for easy conversation overview.
 * **Env Based Config**: Will override .env file with env.prod or env.dev based on start mode.
 
+
+## Links
+
+* Backend Repository: https://github.com/ChatEz-Project/ChatEz-Backend
+* Deployment: https://frontend-deployment-1040104677956.europe-west2.run.app
+
+## Demo
+
 [![Watch the Demo](https://raw.githubusercontent.com/X2Abdul/ChatEz-Frontend/main/Demo_Thumbnail.png)](https://raw.githubusercontent.com/X2Abdul/ChatEz-Frontend/main/ChatEz_Demo.mov)
 
